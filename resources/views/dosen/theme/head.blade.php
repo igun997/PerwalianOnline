@@ -67,7 +67,7 @@
                     <a href="{{url('/dosen')}}" @if(\Request::is('dosen')) class='active' @endif><q class="fa fa-home fa-2x"></q>Home</a>
                     <a href="{{url('/dosen/profile')}}" @if(\Request::is('dosen/profile')) class='active' @endif><q class="fa fa-users fa-2x"></q>Profile Dosen</a>
                     <a href="{{url('/dosen/daftarkelas')}}" @if(\Request::is('dosen/daftarkelas')) class='active' @endif><q class="fa fa-file fa-2x"></q>Daftar Kelas Wali</a>
-                    <a href="{{url('/dosen/frs')}}" @if(\Request::is('dosen/frs')) class='active' @endif><q class="fa fa-file fa-2x"></q>Penyetujuan Rencana Studi</a>
+                    <a href="{{url('/dosen/frs')}}" @if(\Request::is('dosen/frs')) class='active' @endif><q class="fa fa-file fa-2x"></q>Penyetujuan FRS</a>
                     <a href="{{url('/dosen/presensi')}}" @if(\Request::is('dosen/presensi')) class='active' @endif><q class="fa fa-file fa-2x"></q>Perkuliahan & Presensi</a>
                     <a href="{{url('/dosen/keluar')}}" @if(\Request::is('keluar')) class='active' @endif><q class="fa fa-sign-out fa-2x"></q>Keluar</a>
                 </div>
