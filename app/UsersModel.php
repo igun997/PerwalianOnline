@@ -1,0 +1,15 @@
+<?php
+
+namespace SIAK;
+
+use Illuminate\Database\Eloquent\Model;
+
+class UsersModel extends Model
+{
+  protected $table = 'tbl_users';
+  protected $primaryKey = 'id_user';
+  public $timestamps = true;
+  protected $fillable = [
+    'nama_lengkap','username','password','jk','alamat','email','no_hp','no_telepon','level','status_absen','hapus'
+  ];
+}
