@@ -169,6 +169,9 @@ class AdminController extends Controller
   public function carimahasiswa(Request $req)
   {
       $type = $req->input("type");
+      if ($type == null) {
+        return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
+      }
       $q = $req->input("query");
       $get = \SIAK\UsersModel::where(["level"=>"mhs"])
       ->orWhere($type, 'LIKE', "%{$q}%");
