@@ -1,9 +1,9 @@
 @include("admin.theme.head")
 <div id="eis_main">
-    <div id="eis_bar">
-        <div onclick="var sidebar=$('eis_sidebar'); if (sidebar){ if (sidebar.c('?active')){ sidebar.c('!active');this.c('!active'); } else{ sidebar.c('+active');this.c('+active'); } }" id="eis_sidebar_toggle">&nbsp;</div>
-        <div id="eis_tools"></div><q id="eis_title_icon" class="home"></q><span id="eis_title">Dashboard Administrator</span>
-    </div>
+  <div id="eis_bar">
+      <div  id="eis_sidebar_toggle"><center><i class="fa fa-bars fa-2x" style="padding-top:5px;padding-left:5px;padding-right: :5px;padding-bottom:5px;"></i></center></div>
+      <div id="eis_tools"></div><q id="eis_title_icon" ></q><span id="eis_title">{{$title}}</span>
+  </div>
     <div style="padding:5px;padding-bottom:10px">
         <div class="td-box td-box-full">
             <div class="td-box-title">Log Aktifitas</div>

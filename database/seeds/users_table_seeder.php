@@ -11,6 +11,10 @@ class users_table_seeder extends Seeder
      */
     public function run()
     {
+        $jurusan = new \SIAK\JurusanModel;
+        $jurusan->nama_jurusan = "Sistem Informasi";
+        $jurusan->status_jurusan = "aktif";
+        $jurusan->save();
         $obj = new \SIAK\UsersModel;
         $obj1 = new \SIAK\UsersModel;
         $obj2 = new \SIAK\UsersModel;
@@ -24,6 +28,7 @@ class users_table_seeder extends Seeder
         $obj->alamat = "Banjar";
         $obj->no_hp = "081214267695";
         $obj->level = "mhs";
+        $obj->id_jurusan = 1;
         $obj->status_absen = "ya";
         $obj->hapus = "tidak";
         $obj->save();
@@ -41,6 +46,7 @@ class users_table_seeder extends Seeder
         $obj2->username = "jurusan";
         $obj2->password = md5("jurusan");
         $obj2->jk = "laki-laki";
+        $obj2->id_jurusan = 1;
         $obj2->email = "andr.gunanda@gmail.com";
         $obj2->alamat = "Banjar";
         $obj2->no_hp = "081224267691";
@@ -53,6 +59,7 @@ class users_table_seeder extends Seeder
         $obj3->jk = "laki-laki";
         $obj3->email = "sekretariat@gmail.com";
         $obj3->alamat = "Banjar";
+        $obj3->id_jurusan = 1;
         $obj3->no_hp = "081224267661";
         $obj3->level = "sekretariat";
         $obj3->hapus = "tidak";
@@ -63,6 +70,7 @@ class users_table_seeder extends Seeder
         $obj4->jk = "laki-laki";
         $obj4->email = "dosen@gmail.com";
         $obj4->alamat = "Banjar";
+        $obj4->id_jurusan = 1;
         $obj4->no_hp = "081224567661";
         $obj4->level = "dosen";
         $obj4->hapus = "tidak";

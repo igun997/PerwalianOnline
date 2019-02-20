@@ -29,6 +29,6 @@ class CreateSetting extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('setting');
+        Schema::dropIfExists('tbl_setting');
     }
 }

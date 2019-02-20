@@ -22,3 +22,45 @@ function select2Convert($data=[],$op=[])
   }
   return $s;
 }
+function stylePack($type='style')
+{
+  $symbol = explode("symbol","\symbol");
+  $symbol = $symbol[0];
+  $baseassets = str_replace($symbol,"/",base_path())."/style/";
+  if (!file_exists($baseassets.$type)) {
+    exit("Default Style Wrong");
+    die();
+  }
+  $readfile = file_get_contents($baseassets.$type);
+  $readfile = explode("[CSS]",$readfile);
+  $readfile = explode("[JS]",$readfile[1]);
+  $css = explode("\n",$readfile[0]);
+  $js = explode("\n",$readfile[1]);
+  foreach ($js as $key => &$value) {
+    if ($value == "" || $value == "\n" || $value == "\r") {
+      unset($js[$key]);
+    }
+  }
+  foreach ($css as $key => &$value) {
+    if ($value == "" || $value == "\n" || $value == "\r") {
+      unset($css[$key]);
+    }
+  }
+  foreach ($css as $key => &$value) {
+    $baseexp = explode("-|",$value);
+    if (count($baseexp) > 1) {
+      $value = '<link rel="stylesheet" href="'.url($baseexp[1]).'">';
+    }else {
+      $value = '<link rel="stylesheet" href="'.str_replace("\n","",$value).'">';
+    }
+  }
+  foreach ($js as $key => &$value) {
+    $baseexp = explode("-|",$value);
+    if (count($baseexp) > 1) {
+      $value = '<script src="'.url($baseexp[1]).'"></script>';
+    }else {
+      $value = '<script src="'.str_replace("\n","",$value).'"></script>';
+    }
+  }
+  return ["css"=>implode("\n",$css),"js"=>implode("\n",$js)];
+}

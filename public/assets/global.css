@@ -1,0 +1,14 @@
+body{
+
+}
+.btn {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.modal-dialog {
+  max-height: 100px;
+  bottom: 100px;
+  width: 80%
+}

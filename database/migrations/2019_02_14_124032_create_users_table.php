@@ -22,11 +22,13 @@ class CreateUsersTable extends Migration
           $table->text('alamat');
           $table->string('email',100)->unique();
           $table->string('no_hp',15)->unique()->nullable();
+          $table->unsignedInteger('id_jurusan')->nullable();
           $table->string('no_telepon',17)->unique()->nullable();
           $table->enum('level',["mhs","dosen","admin","jurusan","sekretariat"]);
           $table->enum('status_absen',["tidak","ya"])->nullable();
           $table->enum('hapus',["tidak","ya"]);
           $table->timestamps();
+          $table->foreign('id_jurusan')->references('id_jurusan')->on('tbl_jurusan')->onDelete('cascade');
         });
     }
 

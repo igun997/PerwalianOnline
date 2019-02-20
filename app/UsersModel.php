@@ -10,6 +10,10 @@ class UsersModel extends Model
   protected $primaryKey = 'id_user';
   public $timestamps = true;
   protected $fillable = [
-    'nama_lengkap','username','password','jk','alamat','email','no_hp','no_telepon','level','status_absen','hapus'
+    'nama_lengkap','username','password','jk','alamat','email','no_hp','no_telepon','level','status_absen','hapus',"id_jurusan"
   ];
+  public function jurusan()
+  {
+      return $this->hasOne('\SIAK\JurusanModel',"id_jurusan","id_jurusan");
+  }
 }
