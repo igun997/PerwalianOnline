@@ -173,8 +173,12 @@ class AdminController extends Controller
         return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
       }
       $q = $req->input("query");
-      $get = \SIAK\UsersModel::where(["level"=>"mhs"])
-      ->orWhere($type, 'LIKE', "%{$q}%");
+      if ($type != "username") {
+        $get = \SIAK\UsersModel::where(["level"=>"mhs",$type=>$q]);
+      }else {
+        $get = \SIAK\UsersModel::where(["level"=>"mhs"])
+        ->orWhere($type,"LIKE","%{$q}%");
+      }
       if ($get->count() > 0) {
         $temp = $get->first();
         $temp->nama_jurusan = $temp->jurusan->nama_jurusan;
