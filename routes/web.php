@@ -50,10 +50,8 @@ Route::post('/admin/upadminjurusan', "AdminController@upadminjurusan");
 
 Route::get('/admin/mahasiswa', "AdminController@mahasiswa");
 
-Route::get('/admin/readmahasiswa', "AdminController@readmahasiswa");
-Route::post('/admin/addmahasiswa', "AdminController@addmahasiswa");
-Route::post('/admin/delmahasiswa', "AdminController@delmahasiswa");
-Route::post('/admin/upmahasiswa', "AdminController@upmahasiswa");
+Route::post('/admin/carimahasiswa', "AdminController@carimahasiswa");
+Route::post('/admin/rpmahasiswa', "AdminController@resetpassword");
 
 Route::get('/admin/keluar', "AdminController@logout");
 // Dosen

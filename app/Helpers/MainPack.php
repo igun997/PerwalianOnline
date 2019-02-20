@@ -22,6 +22,15 @@ function select2Convert($data=[],$op=[])
   }
   return $s;
 }
+function alpha()
+{
+    $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $pin = mt_rand(1000000, 9999999)
+        . mt_rand(1000000, 9999999)
+        . $characters[rand(0, strlen($characters) - 1)];
+    $string = str_shuffle($pin);
+    return $string;
+}
 function stylePack($type='style')
 {
   $symbol = explode("symbol","\symbol");

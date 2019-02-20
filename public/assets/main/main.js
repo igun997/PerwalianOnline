@@ -186,7 +186,7 @@ function table(columns = [], row = [], id) {
 
 }
 
-function builder(inputs, button, id, button_del = true, col = 1) {
+function builder(inputs, button=null, id, button_del = true, col = 1) {
     var colbuild = [];
     colindex = 0;
     colbuild[colindex++] = "<div class='col-md-12'>";
@@ -195,6 +195,7 @@ function builder(inputs, button, id, button_del = true, col = 1) {
         for (var ix = 0; ix < construct_col; ix++) {
             var input = inputs[ix];
             console.log("LOOP STRIKE " + ix);
+            console.log(input);
             colbuild[colindex++] = "<div class='col-md-" + col + "'>";
             var inputboiler = [];
             for (var i = 0; i < input.length; i++) {
@@ -278,14 +279,18 @@ function builder(inputs, button, id, button_del = true, col = 1) {
             '<button class="btn btn-' + button_del.class + '" style="margin-left:10px" id="' + button_del.id + '" data-id="' + button_del.data + '" type="' + button_del.type + '">' + button_del.name + '</button>'
         ]
     }
-    buttontemp = [
-        '<div class="form-group pull-right">',
+    if (button != null) {
+      buttontemp = [
+        '<div class="form-group">',
         '<button  class="btn btn-' + button.class + '" type="' + button.type + '">' + button.name + '</button>',
         buttondel.join(""),
         '</div>'
-    ];
+      ];
+    }
     colbuild[colindex++] = "<div class='col-md-12'>";
-    colbuild[colindex++] = buttontemp.join("");
+    if (button != null) {
+      colbuild[colindex++] = buttontemp.join("");
+    }
     // colbuild[colindex++] = buttondel.join("");
     colbuild[colindex++] = "</div>";
     colbuild[colindex++] = "</div>";
@@ -327,8 +332,7 @@ toastr.options = {
     extendedTimeOut: 100,
     tapToDismiss: true,
     debug: false,
-    fadeOut: 10,
-    positionClass: "toast-top-center"
+    fadeOut: 10
 };
 $(document).click(function() {
     function isNumberKey(evt) {

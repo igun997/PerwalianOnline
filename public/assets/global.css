@@ -12,3 +12,14 @@ body{
   bottom: 100px;
   width: 80%
 }
+#preload {
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 100px;
+  background-position: center;
+  background-image: url(searching-last.gif);
+  background-color: #fff; /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+}

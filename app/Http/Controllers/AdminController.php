@@ -102,6 +102,7 @@ class AdminController extends Controller
   public function addadminjurusan(Request $req)
   {
     $postData = $req->all();
+    $postData["password"] = md5($postData["password"]);
     $postData["level"] = "jurusan";
     $postData["created_at"] = date("Y-m-d H:i:s");
     $postData["updated_at"] = date("Y-m-d H:i:s");
@@ -156,6 +157,42 @@ class AdminController extends Controller
       return response()->json(["status"=>0,"msg"=>"Gagal Menghapus Admin Jurusan"]);
     }
 
+  }
+  public function mahasiswa()
+  {
+    $css = [];
+    $js = [
+      $this->url->to("/public/assets/main/admin/mahasiswa.js")
+    ];
+    return view("admin.pages.mahasiswa")->with(["title"=>"Dashboard Administrator Perwalian - Mahasiswa","css"=>$css,"js"=>$js]);
+  }
+  public function carimahasiswa(Request $req)
+  {
+      $type = $req->input("type");
+      $q = $req->input("query");
+      $get = \SIAK\UsersModel::where(["level"=>"mhs"])
+      ->orWhere($type, 'LIKE', "%{$q}%");
+      if ($get->count() > 0) {
+        $temp = $get->first();
+        $temp->nama_jurusan = $temp->jurusan->nama_jurusan;
+        $temp->status_absen = ucfirst($temp->status_absen);
+        return response()->json(["status"=>1,"msg"=>"Data Ditemukan","data"=>$temp]);
+      }else {
+        return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
+      }
+  }
+  public function resetpassword(Request $req)
+  {
+    $id = $req->input("id_user");
+    $pw = alpha();
+    $reset = \SIAK\UsersModel::find($id);
+    $reset->password = md5($pw);
+    $set = $reset->save();
+    if ($set) {
+      return response()->json(["status"=>1,"msg"=>"Sukses Reset Password","newpass"=>$pw]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Reset Password"]);
+    }
   }
   public function logout(Request $req)
   {
