@@ -169,7 +169,7 @@ class AdminController extends Controller
   public function carimahasiswa(Request $req)
   {
       $type = $req->input("type");
-      if ($type == null) {
+      if ($type == "== Berdasarkan ==") {
         return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
       }
       $q = $req->input("query");
