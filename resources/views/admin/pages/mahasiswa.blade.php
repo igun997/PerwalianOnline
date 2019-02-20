@@ -39,8 +39,10 @@
           </div>
         </div>
         <hr>
-        <div style="font-size:14px;padding:10px;" id="content">
+        <div style="font-size:14px;padding:10px;" >
           <div id="preload">
+          </div>
+          <div id="content">
           </div>
         </div>
       </div>

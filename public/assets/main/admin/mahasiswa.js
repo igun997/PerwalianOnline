@@ -4,6 +4,7 @@ $(document).ready(function() {
     event.preventDefault();
     dform = $(this).serializeArray();
     console.log(dform);
+    $("#content").html("");
     $("#preload").css("display","block");
     location.href = "#content";
     get = post(base_url+"admin/carimahasiswa",dform);
@@ -56,23 +57,23 @@ $(document).ready(function() {
         value:(get.data.hapus == "tidak")?(get.data.status_absen == "Ya")?"Aktif":"Terblokir":"Tidak Aktif"
       }]];
       html = builder(form,{name:"Reset Password",type:"submit",class:"warning"},"reset",true,12);
-      $("#content").html("<div class='row'><div class='col-md-12'>"+html+"</div></div>");
-      $("#content").find("textarea").attr("disabled",true);
-      $("#content").find("#reset").on('submit',function(event) {
-        event.preventDefault();
-        if (confirm("Apakah Anda Yakin  ? ")) {
-          reset = post(base_url+"admin/rpmahasiswa",{id_user:get.data.id_user});
-          if (reset.status == 1) {
-            toastr.success("Password Berhasil di Reset");
-            bootbox.alert("Password Baru : <b>"+reset.newpass+"</b>");
-          }else {
-            toastr.error("Password Gagal di Reset");
-          }
-        }
-      });
       setTimeout(function () {
         $("#preload").css("display","none");
-      }, 500);
+        $("#content").html("<div class='row'><div class='col-md-12'>"+html+"</div></div>");
+        $("#content").find("textarea").attr("disabled",true);
+        $("#content").find("#reset").on('submit',function(event) {
+          event.preventDefault();
+          if (confirm("Apakah Anda Yakin  ? ")) {
+            reset = post(base_url+"admin/rpmahasiswa",{id_user:get.data.id_user});
+            if (reset.status == 1) {
+              toastr.success("Password Berhasil di Reset");
+              bootbox.alert("Password Baru : <b>"+reset.newpass+"</b>");
+            }else {
+              toastr.error("Password Gagal di Reset");
+            }
+          }
+        });
+      }, 1000);
     }
   });
 });
