@@ -327,6 +327,7 @@ class AdminController extends Controller
   public function logout(Request $req)
   {
     $req->session()->flush();
-    return redirect('/masuk')->send();
+    $req->session()->regenerate();
+    return redirect('/masuk');
   }
 }

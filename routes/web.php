@@ -67,6 +67,11 @@ Route::post('/admin/carimahasiswa', "AdminController@carimahasiswa");
 Route::post('/admin/rpmahasiswa', "AdminController@resetpassword");
 
 Route::get('/admin/keluar', "AdminController@logout");
+//Jurusan
+Route::get('/jurusan', "JurusanController@index");
+Route::get('/jurusan/profile', "JurusanController@profile");
+Route::post('/jurusan/upprofile', "JurusanController@upprofile");
+Route::get('/jurusan/keluar', "JurusanController@logout");
 // Dosen
 Route::get('/dosen',function(){
   $css = [];
