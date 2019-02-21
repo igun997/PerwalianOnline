@@ -272,9 +272,9 @@ class AdminController extends Controller
   }
   public function detailsemester(Request $req)
   {
-    $get = \SIAK\SemesterModel::find($req->input("id_semester"));
+    $get = \SIAK\SemesterModel::where(["id_semester"=>$req->input("id_semester")]);
     if ($get->count() > 0) {
-      $all = $get->all();
+      $all = $get->first();
       return response()->json(["status"=>1,"data"=>$all]);
     }else {
       return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
@@ -294,6 +294,35 @@ class AdminController extends Controller
     }
     $dt = datatablesConvert($get,"no,nama_semester,tahun_ajar,aksi");
     return response()->json($dt);
+  }
+  public function addsemester(Request $req)
+  {
+    $create = \SIAK\SemesterModel::create($req->all());
+    if ($create->save()) {
+      return response()->json(["status"=>1,"msg"=>"Sukses Tambah Semester"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Tambah Semester"]);
+    }
+  }
+  public function upsemester(Request $req)
+  {
+      $set = \SIAK\SemesterModel::find($req->input("id_semester"));
+      $set->nama_semester = $req->input("nama_semester");
+      $set->id_tajar = $req->input("id_tajar");
+      if ($set->save()) {
+        return response()->json(["status"=>1,"msg"=>"Sukses Update Semester"]);
+      }else {
+        return response()->json(["status"=>0,"msg"=>"Gagal Update Semester"]);
+      }
+  }
+  public function delsemester(Request $req)
+  {
+    $set = \SIAK\SemesterModel::find($req->input("id_semester"));
+    if ($set->delete()) {
+      return response()->json(["status"=>1,"msg"=>"Sukses Hapus Semester"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Hapus Semester"]);
+    }
   }
   public function logout(Request $req)
   {
