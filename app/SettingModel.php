@@ -10,6 +10,6 @@ class SettingModel extends Model
   protected $primaryKey = 'id_setting';
   public $timestamps = true;
   protected $fillable = [
-    'tahun_ajar','isi_frs','status_aktif'
+    'meta_key','meta_value'
   ];
 }

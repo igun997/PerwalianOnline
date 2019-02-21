@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
       $this->call(tajar::class);
       $this->call(semester::class);
       $this->call(users_table_seeder::class);
+      $this->call(setting_meta::class);
     }
 }

@@ -10,6 +10,14 @@ class MatkulModel extends Model
   protected $primaryKey = 'id_matkul';
   public $timestamps = true;
   protected $fillable = [
-    'nama_matkul','total_sks','pertemuan','id_kurikulum','status_aktif'
+    'kode_matkul','nama_matkul','total_sks','pertemuan','id_semester','id_kurikulum','jenis'
   ];
+  public function semester()
+  {
+    return $this->hasOne("\SIAK\SemesterModel","id_semester","id_semester");
+  }
+  public function kurikulum()
+  {
+    return $this->hasOne("\SIAK\KurikulumModel","id_kurikulum","id_kurikulum");
+  }
 }

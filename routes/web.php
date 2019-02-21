@@ -71,7 +71,22 @@ Route::get('/admin/keluar', "AdminController@logout");
 Route::get('/jurusan', "JurusanController@index");
 Route::get('/jurusan/profile', "JurusanController@profile");
 Route::post('/jurusan/upprofile', "JurusanController@upprofile");
+//Kurikulum
+Route::get('/jurusan/kurikulum', "JurusanController@kurikulum");
+Route::get('/jurusan/readkurikulum', "JurusanController@readkurikulum");
+Route::post('/jurusan/addkurikulum', "JurusanController@addkurikulum");
+Route::post('/jurusan/delkurikulum', "JurusanController@delkurikulum");
+Route::get('/jurusan/aturkurikulum/{id}/{run}', "JurusanController@aturkurikulum");
+Route::post('/jurusan/addmatkul', "JurusanController@addmatkul");
+Route::post('/jurusan/upmatkul', "JurusanController@upmatkul");
+Route::post('/jurusan/delmatkul', "JurusanController@delmatkul");
+Route::get('/jurusan/listsemester', "JurusanController@listsemester");
+Route::post('/jurusan/detailmatkul', "JurusanController@detailmatkul");
+
+//MHS
 Route::get('/jurusan/keluar', "JurusanController@logout");
+Route::get('/jurusan/mahasiswa', "JurusanController@mahasiswa");
+Route::post('/jurusan/carimahasiswa', "JurusanController@carimahasiswa");
 // Dosen
 Route::get('/dosen',function(){
   $css = [];
