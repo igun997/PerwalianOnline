@@ -197,6 +197,82 @@ class JurusanController extends Controller
         return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
       }
   }
+  //Data Dosen
+  public function dosen()
+  {
+    $css = [];
+    $js = [
+      $this->url->to("/public/assets/main/jurusan/dosen.js")
+    ];
+    return view("jurusan.pages.dosen")->with(["title"=>"Dashboard Jurusan - Dosen","css"=>$css,"js"=>$js]);
+  }
+  public function readdosen(Request $req)
+  {
+    $id = $req->session()->get("id_user");
+    $whereIt = \SIAK\UsersModel::find($id)->first()->id_jurusan;
+    $get = \SIAK\UsersModel::where(["hapus"=>"tidak","level"=>"dosen","id_jurusan"=>$whereIt]);
+    $temp = $get->get();
+    $no = 1;
+    $i = 0;
+    foreach ($temp as $key => &$value) {
+      $value->no = $no;
+      $value->aksi = "<button class='btn btn-warning updatedosen' data-id='{$value->id_user}' data-index='{$i}'><li class='fa fa-edit'></li></button><button class='btn btn-danger deletedosen' data-id='{$value->id_user}' data-index='{$i}'><li class='fa fa-trash'></li></button>";
+      $value->kontak = $value->no_hp."/".$value->no_telepon;
+      $no++;
+      $i++;
+    }
+    return response()->json(datatablesConvert($temp,"no,username,nama_lengkap,email,kontak,alamat,aksi"));
+  }
+  public function updosen(Request $req)
+  {
+    $post = $req->all();
+    if ($post["password"] == "") {
+      $post["password"] = md5($post["password"]);
+    }
+    $id = $post["id_user"];
+    unset($post["id_user"]);
+    $set = \SIAK\UsersModel::find($id)->update($post);
+    if ($set) {
+      return response()->json(["status"=>1,"msg"=>"Sukses Update Data Dosen"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Update Data Dosen"]);
+    }
+  }
+  public function detaildosen(Request $req)
+  {
+    $get = \SIAK\UsersModel::where(["id_user"=>$req->input("id_user")]);
+    if ($get->count() > 0) {
+      $el = $get->first();
+      return response()->json(["status"=>1,"data"=>$el]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
+    }
+  }
+  public function adddosen(Request $req)
+  {
+    $post = $req->all();
+    $id = $req->session()->get("id_user");
+    $whereIt = \SIAK\UsersModel::find($id)->first()->id_jurusan;
+    $post["id_jurusan"] = $whereIt;
+    $post["level"] = "dosen";
+    $post["password"] = md5($post["password"]);
+    $set = \SIAK\UsersModel::create($post);
+    if ($set->save()) {
+      return response()->json(["status"=>1,"msg"=>"Sukses Tambah Dosen"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Tambah Dosen"]);
+    }
+  }
+  public function deldosen(Request $req)
+  {
+    $set = \SIAK\UsersModel::find($req->input("id_user"));
+    $set->hapus = "ya";
+    if ($set->save()) {
+      return response()->json(["status"=>1,"msg"=>"Sukses Hapus Dosen"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Hapus Dosen"]);
+    }
+  }
   public function logout(Request $req)
   {
     $req->session()->flush();

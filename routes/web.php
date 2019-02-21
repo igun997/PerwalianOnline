@@ -82,11 +82,24 @@ Route::post('/jurusan/upmatkul', "JurusanController@upmatkul");
 Route::post('/jurusan/delmatkul', "JurusanController@delmatkul");
 Route::get('/jurusan/listsemester', "JurusanController@listsemester");
 Route::post('/jurusan/detailmatkul', "JurusanController@detailmatkul");
-
 //MHS
-Route::get('/jurusan/keluar', "JurusanController@logout");
 Route::get('/jurusan/mahasiswa', "JurusanController@mahasiswa");
 Route::post('/jurusan/carimahasiswa', "JurusanController@carimahasiswa");
+//Data Dosen
+Route::get('/jurusan/dosen', "JurusanController@dosen");
+Route::get('/jurusan/readdosen', "JurusanController@readdosen");
+Route::post('/jurusan/adddosen', "JurusanController@adddosen");
+Route::post('/jurusan/updosen', "JurusanController@updosen");
+Route::post('/jurusan/deldosen', "JurusanController@deldosen");
+Route::post('/jurusan/detaildosen', "JurusanController@detaildosen");
+// Data Sekretariat
+Route::get('/jurusan/sekretariat', "JurusanController@sekretariat");
+Route::get('/jurusan/readsekretariat', "JurusanController@readsekretariat");
+Route::post('/jurusan/addsekretariat', "JurusanController@addsekretariat");
+Route::post('/jurusan/upsekretariat', "JurusanController@upsekretariat");
+Route::post('/jurusan/delsekretariat', "JurusanController@delsekretariat");
+Route::post('/jurusan/detailsekretariat', "JurusanController@detailsekretariat");
+Route::get('/jurusan/keluar', "JurusanController@logout");
 // Dosen
 Route::get('/dosen',function(){
   $css = [];
