@@ -12,4 +12,8 @@ class KelasPresensiSignModel extends Model
   protected $fillable = [
     'id_presensi','id_user','presensi'
   ];
+  public function mahasiswa()
+  {
+    return $this->hasOne("\SIAK\UsersModel","id_user","id_user")->where(["level"=>"mhs"]);
+  }
 }

@@ -43,6 +43,19 @@ Route::post('/admin/upjurusan', "AdminController@upjurusan");
 Route::get('/admin/listjurusan', "AdminController@listjurusan");
 Route::post('/admin/detailadmin', "AdminController@detailadminjurusan");
 
+Route::get('/admin/setakademik', "AdminController@setakademik");
+Route::get('/admin/listtajar', "AdminController@listtajar");
+Route::post('/admin/detailtajar', "AdminController@detailtajar");
+Route::post('/admin/detailsemester', "AdminController@detailsemester");
+Route::get('/admin/readtajar', "AdminController@readtajar");
+Route::post('/admin/addtajar', "AdminController@addtajar");
+Route::post('/admin/uptajar', "AdminController@uptajar");
+Route::post('/admin/deltajar', "AdminController@deltajar");
+Route::get('/admin/readsemester', "AdminController@readsemester");
+Route::post('/admin/addsemester', "AdminController@addsemester");
+Route::post('/admin/upsemester', "AdminController@upsemester");
+Route::post('/admin/delsemester', "AdminController@delsemester");
+
 Route::get('/admin/readadminjurusan', "AdminController@readadminjurusan");
 Route::post('/admin/addadminjurusan', "AdminController@addadminjurusan");
 Route::post('/admin/deladminjurusan', "AdminController@deladminjurusan");

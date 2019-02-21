@@ -12,4 +12,8 @@ class KelasPresensiModel extends Model
   protected $fillable = [
     'topik_pembahasan','id_kelas'
   ];
+  public function kelas()
+  {
+    return $this->hasOne("\SIAK\KelasModel","id_kelas","id_kelas");
+  }
 }

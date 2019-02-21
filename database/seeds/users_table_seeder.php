@@ -1,3 +1,4 @@
+<?psemes
 <?php
 
 use Illuminate\Database\Seeder;
@@ -29,6 +30,7 @@ class users_table_seeder extends Seeder
         $obj->no_hp = "081214267695";
         $obj->level = "mhs";
         $obj->id_jurusan = 1;
+        $obj->id_semester = 1;
         $obj->status_absen = "ya";
         $obj->hapus = "tidak";
         $obj->save();

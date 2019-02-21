@@ -20,6 +20,7 @@ class AdminController extends Controller
     $js = [];
     return view("admin.pages.home")->with(["title"=>"Dashboard Administrator Perwalian","css"=>$css,"js"=>$js]);
   }
+  //Jurusan
   public function jurusan()
   {
     $css = [];
@@ -158,6 +159,7 @@ class AdminController extends Controller
     }
 
   }
+  //Mahasiswa
   public function mahasiswa()
   {
     $css = [];
@@ -200,6 +202,98 @@ class AdminController extends Controller
     }else {
       return response()->json(["status"=>0,"msg"=>"Gagal Reset Password"]);
     }
+  }
+  //Setting Akademik
+  public function setakademik()
+  {
+    $css = [];
+    $js = [
+      $this->url->to("/public/assets/main/admin/setakademik.js")
+    ];
+    return view("admin.pages.setakademik")->with(["title"=>"Dashboard Administrator Perwalian - Akademik","css"=>$css,"js"=>$js]);
+  }
+  public function listtajar(Request $req)
+  {
+    $get = \SIAK\TajarModel::all();
+    $select2 = select2Convert($get,["text"=>"nama_tajar","id"=>"id_tajar"]);
+    return response()->json($select2);
+  }
+  public function addtajar(Request $req)
+  {
+    $set = \SIAK\TajarModel::create($req->all());
+    if ($set->save()) {
+      return response()->json(["status"=>1,"msg"=>"Tahun Ajar Berhasil di Tambah"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Tahun Ajar Gagal di Tambah"]);
+    }
+  }
+  public function uptajar(Request $req)
+  {
+    $set = \SIAK\TajarModel::find($req->input("id_tajar"));
+    $set->nama_tajar = $req->input("nama_tajar");
+    if ($set->save()) {
+      return response()->json(["status"=>1,"msg"=>"Tahun Ajar Berhasil di Ubah"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Tahun Ajar Gagal di Ubah"]);
+    }
+  }
+  public function deltajar(Request $req)
+  {
+    $set = \SIAK\TajarModel::find($req->input("id_tajar"));
+    if ($set->delete()) {
+      return response()->json(["status"=>1,"msg"=>"Tahun Ajar Berhasil di Hapus"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Tahun Ajar Gagal di Hapus"]);
+    }
+  }
+  public function detailtajar(Request $req)
+  {
+    $get = \SIAK\TajarModel::find($req->input("id_tajar"));
+    if ($get->count() > 0) {
+      $all = $get->all();
+      return response()->json(["status"=>1,"data"=>$all]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
+    }
+  }
+  public function readtajar(Request $req)
+  {
+    $get = \SIAK\TajarModel::all();
+    $no = 1;
+    $i = 0;
+    foreach ($get as $key => &$value) {
+      $value->no = $no;
+      $value->aksi = "<button class=' btn btn-warning updatetajar' data-index='".$i."' data-id='".$value->id_tajar."'><li class='fa fa-edit'></li></button><button class=' btn btn-danger hapustajar' data-index='".$i."' data-id='".$value->id_tajar."'><li class='fa fa-trash'></li></button>";
+      $no++;
+      $i++;
+    }
+    $dt = datatablesConvert($get,"no,nama_tajar,aksi");
+    return response()->json($dt);
+  }
+  public function detailsemester(Request $req)
+  {
+    $get = \SIAK\SemesterModel::find($req->input("id_semester"));
+    if ($get->count() > 0) {
+      $all = $get->all();
+      return response()->json(["status"=>1,"data"=>$all]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
+    }
+  }
+  public function readsemester()
+  {
+    $get = \SIAK\SemesterModel::all();
+    $no = 1;
+    $i = 0;
+    foreach ($get as $key => &$value) {
+      $value->no = $no;
+      $value->tahun_ajar = $value->tajar->nama_tajar;
+      $value->aksi = "<button class=' btn btn-warning updatesemester' data-index='".$i."' data-id='".$value->id_semester."'><li class='fa fa-edit'></li></button><button class=' btn btn-danger hapussemester' data-index='".$i."' data-id='".$value->id_semester."'><li class='fa fa-trash'></li></button>";
+      $no++;
+      $i++;
+    }
+    $dt = datatablesConvert($get,"no,nama_semester,tahun_ajar,aksi");
+    return response()->json($dt);
   }
   public function logout(Request $req)
   {

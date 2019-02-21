@@ -12,4 +12,8 @@ class KelasPesertaModel extends Model
   protected $fillable = [
     'id_kelas','id_user','nilai_akhir'
   ];
+  public function mahasiswa()
+  {
+    return $this->hasOne("\SIAK\UsersModel","id_user","id_user")->where(["level"=>"mhs"]);
+  }
 }

@@ -16,4 +16,8 @@ class UsersModel extends Model
   {
       return $this->hasOne('\SIAK\JurusanModel',"id_jurusan","id_jurusan");
   }
+  public function semester()
+  {
+      return $this->hasOne('\SIAK\SemesterModel',"id_semester","id_semester");
+  }
 }

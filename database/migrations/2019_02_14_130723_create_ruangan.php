@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSetting extends Migration
+class CreateRuangan extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateSetting extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_setting', function (Blueprint $table) {
-          $table->increments('id_setting');
-          $table->string('meta_key',100)->unique();
-          $table->string("meta_value",100);
-          $table->timestamps();
+        Schema::create('tbl_ruangan', function (Blueprint $table) {
+            $table->increments('id_ruangan');
+            $table->string('nama_ruangan');
+            $table->double('kuota_ruangan');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +28,6 @@ class CreateSetting extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_setting');
+        Schema::dropIfExists('tbl_ruangan');
     }
 }

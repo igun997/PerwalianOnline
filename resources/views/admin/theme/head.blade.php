@@ -28,5 +28,6 @@
                     <a href="{{url('/admin')}}" @if(\Request::is('admin')) class='active' @endif><q class="fa fa-home fa-2x"></q>Home</a>
                     <a href="{{url('/admin/mahasiswa')}}" @if(\Request::is('admin/mahasiswa')) class='active' @endif><q class="fa fa-file fa-2x"></q>Mahasiswa</a>
                     <a href="{{url('/admin/jurusan')}}" @if(\Request::is('admin/jurusan')) class='active' @endif><q class="fa fa-file fa-2x"></q>Jurusan</a>
+                    <a href="{{url('/admin/setakademik')}}" @if(\Request::is('admin/setakademik')) class='active' @endif><q class="fa fa-file fa-2x"></q>Akademik</a>
                     <a href="{{url('/admin/keluar')}}" @if(\Request::is('keluar')) class='active' @endif><q class="fa fa-sign-out fa-2x"></q>Keluar</a>
                 </div>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSetting extends Migration
+class CreateTajar extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateSetting extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_setting', function (Blueprint $table) {
-          $table->increments('id_setting');
-          $table->string('meta_key',100)->unique();
-          $table->string("meta_value",100);
+        Schema::create('tbl_tajar', function (Blueprint $table) {
+          $table->increments('id_tajar');
+          $table->string('nama_tajar',50)->unique();
           $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ class CreateSetting extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_setting');
+        Schema::dropIfExists('tbl_tajar');
     }
 }
