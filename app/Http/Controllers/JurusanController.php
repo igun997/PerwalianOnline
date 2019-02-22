@@ -229,7 +229,7 @@ class JurusanController extends Controller
   public function updosen(Request $req)
   {
     $post = $req->all();
-    if ($post["password"] == "") {
+    if ($post["password"] != "") {
       $post["password"] = md5($post["password"]);
     }
     $id = $post["id_user"];
