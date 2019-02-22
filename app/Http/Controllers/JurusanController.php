@@ -7,12 +7,15 @@ use Illuminate\Routing\UrlGenerator;
 class JurusanController extends Controller
 {
   public $url ;
+  public $jurusan;
   public function __construct(UrlGenerator $url,Request $req)
   {
      $this->url = $url;
      if ($req->session()->get("level") != "jurusan") {
        return redirect('/masuk')->send();
        // var_dump(($req->session()->all()));
+     }else {
+       $this->jurusan = $whereIt = \SIAK\UsersModel::find($req->session()->get("id_user"))->first()->id_jurusan;
      }
   }
   public function index(Request $req)
@@ -347,6 +350,86 @@ class JurusanController extends Controller
       return response()->json(["status"=>1,"msg"=>"Sukses Hapus Sekretariat"]);
     }else {
       return response()->json(["status"=>0,"msg"=>"Gagal Hapus Sekretariat"]);
+    }
+  }
+  //Kelas Angkatan
+  public function listtajar(Request $req)
+  {
+    $get = \SIAK\TajarModel::all();
+    $select2 = select2Convert($get,["text"=>"nama_tajar","id"=>"id_tajar"]);
+    return response()->json($select2);
+  }
+  public function kelasangkatan()
+  {
+    $css = [];
+    $js = [
+      $this->url->to("/public/assets/main/jurusan/kelasangkatan.js")
+    ];
+    return view("jurusan.pages.kelasangkatan")->with(["title"=>"Dashboard Jurusan - Kelas Angkatan","css"=>$css,"js"=>$js]);
+  }
+  public function readkelasangkatan(Request $req)
+  {
+    $get = \SIAK\KelasawalModel::where(["id_jurusan"=>$this->jurusan])->get();
+    $no = 1;
+    $i = 0;
+    foreach ($get as $key => &$value) {
+      $value->no = $no ;
+      $value->thn = $value->tajar->nama_tajar;
+      $value->dosenwali = $value->dosen->nama_lengkap;
+      $value->aksi = "<button class='btn btn-warning updatekelas' data-id='{$value->id_kelasawal}' data-index='{$i}'><li class='fa fa-edit'></li> </button> <button class='btn btn-danger deletekelas' data-id='{$value->id_kelasawal}' data-index='{$i}'><li class='fa fa-trash'></li></button>";
+      $no++;
+      $i++;
+    }
+    return response()->json(datatablesConvert($get,"no,kode_kelas,nama_kelas,thn,dosenwali,aksi"));
+  }
+  public function listdosen()
+  {
+    $get = \SIAK\UsersModel::where(["id_jurusan"=>$this->jurusan,"level"=>"dosen"])->get();
+    $d = select2Convert($get,["text"=>"nama_lengkap","id"=>"id_user"]);
+    return response()->json($d);
+  }
+  public function addkelasangkatan(Request $req)
+  {
+    $post = $req->all();
+    $post["id_jurusan"] = $this->jurusan;
+    $set = \SIAK\KelasawalModel::create($post);
+    if ($set->save()) {
+      return response()->json(["status"=>1,"msg"=>"Data Kelas Berhasil Di Simpan"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Data Kelas Gagal Di Simpan"]);
+    }
+  }
+  public function delkelasangkatan(Request $req)
+  {
+    $id = $req->input("id_kelasawal");
+    $set = \SIAK\KelasawalModel::find($id);
+    if ($set->delete()) {
+      // code...
+      return response()->json(["status"=>1,"msg"=>"Sukses Hapus Kelas"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Hapus Kelas"]);
+    }
+  }
+  public function detailkelasangkatan(Request $req)
+  {
+      $id = $req->input("id_kelasawal");
+      $get = \SIAK\KelasawalModel::where(["id_kelasawal"=>$id]);
+      if ($get->count() > 0) {
+        return response()->json(["status"=>1,"data"=>$get->first()]);
+      }else {
+        return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
+      }
+  }
+  public function upkelasangkatan(Request $req)
+  {
+    $id = $req->input("id_kelasawal");
+    $post = $req->all();
+    unset($post["id_kelasawal"]);
+    $set = \SIAK\KelasawalModel::find($id)->update($post);
+    if ($set) {
+      return response()->json(["status"=>1,"msg"=>"Sukses Update Kelas"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Update Kelas"]);
     }
   }
   public function logout(Request $req)

@@ -99,6 +99,15 @@ Route::post('/jurusan/addsekretariat', "JurusanController@addsekretariat");
 Route::post('/jurusan/upsekretariat', "JurusanController@upsekretariat");
 Route::post('/jurusan/delsekretariat', "JurusanController@delsekretariat");
 Route::post('/jurusan/detailsekretariat', "JurusanController@detailsekretariat");
+//Kelas Angkatan
+Route::get('/jurusan/kelasangkatan', "JurusanController@kelasangkatan");
+Route::get('/jurusan/readkelasangkatan', "JurusanController@readkelasangkatan");
+Route::post('/jurusan/addkelasangkatan', "JurusanController@addkelasangkatan");
+Route::post('/jurusan/upkelasangkatan', "JurusanController@upkelasangkatan");
+Route::post('/jurusan/delkelasangkatan', "JurusanController@delkelasangkatan");
+Route::post('/jurusan/detailkelasangkatan', "JurusanController@detailkelasangkatan");
+Route::get('/jurusan/listdosen', "JurusanController@listdosen");
+Route::get('/jurusan/listtajar', "JurusanController@listtajar");
 Route::get('/jurusan/keluar', "JurusanController@logout");
 // Dosen
 Route::get('/dosen',function(){
