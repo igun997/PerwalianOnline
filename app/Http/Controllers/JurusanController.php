@@ -432,6 +432,142 @@ class JurusanController extends Controller
       return response()->json(["status"=>0,"msg"=>"Gagal Update Kelas"]);
     }
   }
+  //Mapel
+  public function listmatkul()
+  {
+    $get = \SIAK\MatkulModel::all();
+    return response()->json(select2Convert($get,["text"=>"nama_matkul","id"=>"id_matkul"]));
+  }
+  public function kelasmapel(Request $req)
+  {
+    $css = [
+      "//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+    ];
+    $js = [
+      "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js",
+      "//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js",
+      $this->url->to("/public/assets/main/jurusan/kelasmapel.js")
+    ];
+    return view("jurusan.pages.kelasmapel")->with(["title"=>"Dashboard Jurusan - Kelas Mata Kuliah (Pilihan)","css"=>$css,"js"=>$js]);
+  }
+  public function readruangan()
+  {
+    $get = \SIAK\RuanganModel::all();
+    $no = 1;
+    $i=0;
+    foreach ($get as $key => &$value) {
+      $value->no = $no;
+        $value->aksi = "<button class='btn btn-warning updateruangan' data-id='{$value->id_ruangan}' data-index='{$i}'><li class='fa fa-edit'></li> </button> <button class='btn btn-danger deleteruangan' data-id='{$value->id_ruangan}' data-index='{$i}'><li class='fa fa-trash'></li></button>";
+      $no++;
+      $i++;
+    }
+    return response()->json(datatablesConvert($get,"no,nama_ruangan,kuota_ruangan,aksi"));
+  }
+  public function readkelasmapel(Request $req)
+  {
+    $get =  \SIAK\KelasModel::where(["id_jurusan"=>$this->jurusan]);
+    $no = 1;
+    $i=0;
+    $get = $get->get();
+    foreach ($get as $key => &$value) {
+      $value->no = $no;
+      $value->waktu = $value->mulai_kelas." - ".$value->selesai_kelas;
+      $value->nomor_ruang = $value->ruangan->nama_ruangan;
+      $value->matakuliah = $value->matkul->nama_matkul;
+      $value->dosen_pengampu = $value->dosen->nama_lengkap;
+      $value->aksi = "<button class='btn btn-warning updatekelas' data-id='{$value->id_kelas}' data-index='{$i}'><li class='fa fa-edit'></li> </button> <button class='btn btn-danger deletekelas' data-id='{$value->id_kelas}' data-index='{$i}'><li class='fa fa-trash'></li></button>";
+      $no++;
+      $i++;
+    }
+    return response()->json(datatablesConvert($get,"no,nama_kelas,hari_kelas,waktu,nomor_ruang,matakuliah,dosen_pengampu,aksi"));
+  }
+  public function addruangan(Request $req)
+  {
+    $post = $req->all();
+    $set = \SIAK\RuanganModel::create($post);
+    if ($set->save()) {
+
+      return response()->json(["status"=>1,"msg"=>"Sukses Tambah Ruangan"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Tambah Ruangan"]);
+    }
+  }
+  public function upruangan(Request $req)
+  {
+    $post = $req->all();
+    unset($post["id_ruangan"]);
+    $set = \SIAK\RuanganModel::find($req->input("id_ruangan"))->update($post);
+    if ($set) {
+      return response()->json(["status"=>1,"msg"=>"Sukses Update Ruangan"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Update Ruangan"]);
+    }
+  }
+  public function delruangan(Request $req)
+  {
+    $set = \SIAK\RuanganModel::find($req->input("id_ruangan"));
+    if ($set->delete()) {
+      return response()->json(["status"=>1,"msg"=>"Sukses Hapus Ruangan"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Hapus Ruangan"]);
+    }
+  }
+  public function listruangan()
+  {
+    $get = \SIAK\RuanganModel::all();
+    return response()->json(select2Convert($get,["text"=>"nama_ruangan","id"=>"id_ruangan"]));
+  }
+  public function addkelasmapel(Request $req)
+  {
+    $post = $req->all();
+    $post["id_jurusan"] = $this->jurusan;
+    $set = \SIAK\KelasModel::create($post);
+    if ($set->save()) {
+      return response()->json(["status"=>1,"msg"=>"Sukses Tambah Kelas"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Tambah Kelas"]);
+    }
+  }
+  public function upkelasmapel(Request $req)
+  {
+    $post = $req->all();
+    unset($post["id_kelas"]);
+    $set = \SIAK\KelasModel::find($req->input("id_kelas"))->update($post);
+    if ($set) {
+      return response()->json(["status"=>1,"msg"=>"Sukses Update Kelas"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Update Kelas"]);
+    }
+  }
+  public function delkelasmapel(Request $req)
+  {
+    $set = \SIAK\KelasModel::find($req->input("id_kelas"));
+    if ($set->delete()) {
+      return response()->json(["status"=>1,"msg"=>"Sukses Hapus Kelas"]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Gagal Hapus Kelas"]);
+    }
+  }
+  public function detailruang(Request $req)
+  {
+    $set = \SIAK\RuanganModel::find($req->input("id_ruangan"));
+    if ($set->count() > 0) {
+      $get = $set->first();
+      return response()->json(["status"=>1,"data"=>$get]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
+    }
+  }
+  public function detailkelasmapel(Request $req)
+  {
+    $set = \SIAK\KelasModel::find($req->input("id_kelas"));
+    if ($set->count() > 0) {
+      $get = $set->first();
+      return response()->json(["status"=>1,"data"=>$get]);
+    }else {
+      return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
+    }
+  }
   public function logout(Request $req)
   {
     $req->session()->flush();

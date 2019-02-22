@@ -108,6 +108,22 @@ Route::post('/jurusan/delkelasangkatan', "JurusanController@delkelasangkatan");
 Route::post('/jurusan/detailkelasangkatan', "JurusanController@detailkelasangkatan");
 Route::get('/jurusan/listdosen', "JurusanController@listdosen");
 Route::get('/jurusan/listtajar', "JurusanController@listtajar");
+//Kelas Mapel
+Route::get('/jurusan/kelasmapel', "JurusanController@kelasmapel");
+Route::get('/jurusan/readruangan', "JurusanController@readruangan");
+Route::post('/jurusan/addruangan', "JurusanController@addruangan");
+Route::post('/jurusan/upruangan', "JurusanController@upruangan");
+Route::post('/jurusan/delruangan', "JurusanController@delruangan");
+Route::get('/jurusan/listruangan', "JurusanController@listruangan");
+//Extra
+Route::post('/jurusan/detailruang', "JurusanController@detailruang");
+Route::post('/jurusan/detailkelasmapel', "JurusanController@detailkelasmapel");
+//Sub Kelas
+Route::get('/jurusan/readkelasmapel', "JurusanController@readkelasmapel");
+Route::post('/jurusan/addkelasmapel', "JurusanController@addkelasmapel");
+Route::post('/jurusan/upkelasmapel', "JurusanController@upkelasmapel");
+Route::post('/jurusan/delkelasmapel', "JurusanController@delkelasmapel");
+Route::get('/jurusan/listmatkul', "JurusanController@listmatkul");
 Route::get('/jurusan/keluar', "JurusanController@logout");
 // Dosen
 Route::get('/dosen',function(){
