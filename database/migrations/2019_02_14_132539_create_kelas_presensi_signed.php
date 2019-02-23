@@ -17,7 +17,7 @@ class CreateKelasPresensiSigned extends Migration
           $table->increments('id_ps');
           $table->unsignedInteger('id_presensi');
           $table->unsignedInteger('id_user');
-          $table->enum("presensi",["S","I","A","T"]);
+          $table->enum("presensi",["S","I","A","T","H"]);
           $table->timestamps();
           $table->foreign('id_presensi')->references('id_presensi')->on('tbl_kelas_presensi')->onDelete('cascade');
           $table->foreign('id_user')->references('id_user')->on('tbl_users')->onDelete('cascade');

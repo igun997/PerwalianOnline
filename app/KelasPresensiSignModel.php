@@ -16,4 +16,8 @@ class KelasPresensiSignModel extends Model
   {
     return $this->hasOne("\SIAK\UsersModel","id_user","id_user")->where(["level"=>"mhs"]);
   }
+  public function topik()
+  {
+    return $this->hasOne("\SIAK\KelasPresensiModel","id_presensi","id_presensi");
+  }
 }

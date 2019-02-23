@@ -16,4 +16,8 @@ class KelasPesertaModel extends Model
   {
     return $this->hasOne("\SIAK\UsersModel","id_user","id_user")->where(["level"=>"mhs"]);
   }
+  public function kelas()
+  {
+    return $this->hasOne("\SIAK\KelasModel","id_kelas","id_kelas");
+  }
 }

@@ -12,4 +12,8 @@ class KurikulumModel extends Model
   protected $fillable = [
     'nama_kurikulum','id_user'
   ];
+  public function user()
+  {
+    return $this->hasOne("\SIAK\UsersModel","id_user","id_user");
+  }
 }

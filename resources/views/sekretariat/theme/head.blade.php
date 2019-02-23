@@ -25,6 +25,7 @@
         <div>
             <div id="eis_holder">
                 <div id="eis_sidebar" class="">
-                    <a href="{{url('/dosen')}}" @if(\Request::is('dosen')) class='active' @endif><q class="fa fa-home fa-2x"></q>Beranda</a>
-                    <a href="{{url('/dosen/keluar')}}" @if(\Request::is('keluar')) class='active' @endif><q class="fa fa-sign-out fa-2x"></q>Keluar</a>
+                    <a href="{{url('/sekretariat')}}" @if(\Request::is('sekretariat')) class='active' @endif><q class="fa fa-home fa-2x"></q>Beranda</a>
+                    <a href="{{url('/sekretariat/isimatkul')}}" @if(\Request::is('sekretariat/isimatkul')) class='active' @endif><q class="fa fa-user fa-2x"></q>Pengisian Mata Kuliah</a>
+                    <a href="{{url('/sekretariat/keluar')}}" @if(\Request::is('keluar')) class='active' @endif><q class="fa fa-sign-out fa-2x"></q>Keluar</a>
                 </div>

@@ -10,7 +10,7 @@ class KelasPresensiModel extends Model
   protected $primaryKey = 'id_presensi';
   public $timestamps = true;
   protected $fillable = [
-    'topik_pembahasan','id_kelas'
+    'topik_pembahasan',"masuk","keluar",'id_kelas',"pertemuan_ke"
   ];
   public function kelas()
   {

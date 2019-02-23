@@ -16,6 +16,9 @@ class CreateKelasPresensi extends Migration
         Schema::create('tbl_kelas_presensi', function (Blueprint $table) {
           $table->increments('id_presensi');
           $table->string('topik_pembahasan',200);
+          $table->string('pertemuan_ke',10);
+          $table->string('masuk',50);
+          $table->string('keluar',50);
           $table->unsignedInteger("id_kelas");
           $table->timestamps();
           $table->foreign('id_kelas')->references('id_kelas')->on('tbl_kelas')->onDelete('cascade');

@@ -21,12 +21,7 @@ Route::get('/flushfaker',function(){
   // var_dump(session()->all());
   session()->flush();
 });
-Route::get('/test',function(){
-  // var_dump(session()->all());
-  echo (stylePack())["css"];
-  echo (stylePack())["js"];
-});
-
+Route::get('/test',"SekretariatController@getmatkullist");
 
 // Landing
 Route::get('/', "LandingController@index");
@@ -126,29 +121,28 @@ Route::post('/jurusan/delkelasmapel', "JurusanController@delkelasmapel");
 Route::get('/jurusan/listmatkul', "JurusanController@listmatkul");
 Route::get('/jurusan/keluar', "JurusanController@logout");
 // Dosen
-Route::get('/dosen',function(){
-  $css = [];
-  $js = [];
-  return view("dosen.pages.home")->with(["title"=>"Dashboard Dosen Perwalian","css"=>$css,"js"=>$js]);
-});
-Route::get('/dosen/keluar',function(){
-  session()->flush();
-  return redirect("/masuk")->send();
-});
+Route::get('/dosen',"DosenController@index");
+Route::get('/dosen/profile',"DosenController@profile");
+Route::get('/dosen/daftarkelaswali',"DosenController@daftarkelaswali");
+Route::get('/dosen/pencarianmhs',"DosenController@pencarianmhs");
+Route::get('/dosen/pencariannilai',"DosenController@pencariannilai");
+Route::get('/dosen/presensi',"DosenController@presensi");
+Route::post('/dosen/getabsen',"DosenController@getabsen");
+Route::post('/dosen/getpeserta',"DosenController@getpeserta");
+Route::post('/dosen/checkpoint',"DosenController@checkpoint");
+Route::post('/dosen/upcheckpoint',"DosenController@upcheckpoint");
+Route::post('/dosen/stoppoint',"DosenController@stoppoint");
+Route::get('/dosen/keluar',"DosenController@logout");
 // Sekretariat
-Route::get('/sekretariat',function(){
-  $css = [];
-  $js = [];
-  return view("sekertariat.pages.home")->with(["title"=>"Dashboard Dosen Perwalian","css"=>$css,"js"=>$js]);
-});
-Route::get('/sekretariat/keluar',function(){
-  session()->flush();
-  return redirect("/masuk")->send();
-});
+Route::get('/sekretariat',"SekretariatController@index");
+Route::get('/sekretariat/isimatkul',"SekretariatController@isimatkul");
+Route::get('/sekretariat/readisimatkul',"SekretariatController@readisimatkul");
+Route::get('/sekretariat/keluar',"SekretariatController@logout");
 // Mahasiswa
+Route::get('/mhs',"MhsController@index");
 Route::get('/mhs/keluar',function(){
   session()->flush();
-  return redirect("/masuk")->send();
+  return redirect("/masuk");
 });
 // Keuangan
 Route::get('/keuangan/keluar',function(){

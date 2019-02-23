@@ -25,13 +25,7 @@
         <div>
             <div id="eis_holder">
                 <div id="eis_sidebar" class="">
-                    <a href="{{url('/jurusan')}}" @if(\Request::is('jurusan')) class='active' @endif><q class="fa fa-home fa-2x"></q>Beranda</a>
-                    <a href="{{url('/jurusan/profile')}}" @if(\Request::is('jurusan/profile')) class='active' @endif><q class="fa fa-user fa-2x"></q>Profile</a>
-                    <a href="{{url('/jurusan/kurikulum')}}" @if(\Request::is('jurusan/kurikulum')) class='active' @endif><q class="fa fa-file fa-2x"></q>Data Kurikulum</a>
-                    <a href="{{url('/jurusan/dosen')}}" @if(\Request::is('jurusan/dosen')) class='active' @endif><q class="fa fa-file fa-2x"></q>Data Dosen</a>
-                    <a href="{{url('/jurusan/sekretariat')}}" @if(\Request::is('jurusan/sekretariat')) class='active' @endif><q class="fa fa-file fa-2x"></q>Data Sekretariat</a>
-                    <a href="{{url('/jurusan/kelasangkatan')}}" @if(\Request::is('jurusan/kelasangkatan')) class='active' @endif><q class="fa fa-file fa-2x"></q>Data Kelas Angkatan</a>
-                    <a href="{{url('/jurusan/kelasmapel')}}" @if(\Request::is('jurusan/kelasmapel')) class='active' @endif><q class="fa fa-file fa-2x"></q>Data Kelas Mata Kuliah</a>
-                    <a href="{{url('/jurusan/mahasiswa')}}" @if(\Request::is('jurusan/mahasiswa')) class='active' @endif><q class="fa fa-file fa-2x"></q>Data Mahasiswa</a>
-                    <a href="{{url('/jurusan/keluar')}}" @if(\Request::is('keluar')) class='active' @endif><q class="fa fa-sign-out fa-2x"></q>Keluar</a>
+                    <a href="{{url('/dosen')}}" @if(\Request::is('dosen')) class='active' @endif><q class="fa fa-home fa-2x"></q>Beranda</a>
+                    <a href="{{url('/dosen/presensi')}}" @if(\Request::is('dosen/presensi')) class='active' @endif><q class="fa fa-pencil fa-2x"></q>Presensi</a>
+                    <a href="{{url('/dosen/keluar')}}" @if(\Request::is('keluar')) class='active' @endif><q class="fa fa-sign-out fa-2x"></q>Keluar</a>
                 </div>
