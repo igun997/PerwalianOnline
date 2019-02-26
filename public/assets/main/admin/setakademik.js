@@ -6,6 +6,34 @@ $(document).ready(function() {
   table_semester = $("#mainsemester").DataTable({
     ajax:base_url+"admin/readsemester"
   })
+  $("#maintajar").on('click',".settajar",function(event) {
+    event.preventDefault();
+    if (confirm("Apakah Anda Yakin ? ")) {
+      id = $(this).data("id");
+      data = table_tajar.row($(this).data("index")).data();
+      up = post(base_url+"admin/upset",{type:"set",key:"tahun_ajar",value:id});
+      if (up.status == 1) {
+        table_tajar.ajax.reload();
+        toastr.success(up.msg);
+      }else {
+        toastr.error(up.msg);
+      }
+    }
+  });
+  $("#maintajar").on('click',".unsettajar",function(event) {
+    event.preventDefault();
+    if (confirm("Apakah Anda Yakin ? ")) {
+      id = $(this).data("id");
+      data = table_tajar.row($(this).data("index")).data();
+      up = post(base_url+"admin/upset",{type:"unset",key:"tahun_ajar",value:id});
+      if (up.status == 1) {
+        table_tajar.ajax.reload();
+        toastr.success(up.msg);
+      }else {
+        toastr.error(up.msg);
+      }
+    }
+  });
   $("#addtajar").on('click',  function(event) {
     event.preventDefault();
     var dialog = bootbox.dialog({

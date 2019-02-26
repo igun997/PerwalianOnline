@@ -30,6 +30,7 @@ Route::post('/masuk',"LandingController@loginproses");
 // Admin
 Route::get('/admin', "AdminController@index");
 Route::get('/admin/jurusan', "AdminController@jurusan");
+Route::post("/admin/upset","AdminController@upset");
 
 Route::get('/admin/readjurusan', "AdminController@readjurusan");
 Route::post('/admin/addjurusan', "AdminController@addjurusan");

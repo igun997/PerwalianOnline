@@ -261,9 +261,14 @@ class AdminController extends Controller
     $get = \SIAK\TajarModel::all();
     $no = 1;
     $i = 0;
+    $set = \SIAK\SettingModel::where(["meta_key"=>"tahun_ajar"])->first();
     foreach ($get as $key => &$value) {
+      $btn = "<button class=' btn btn-success settajar' data-index='".$i."' data-id='".$value->id_tajar."'><li class='fa fa-check'></li></button>";
+      if ($set->meta_value == $value->id_tajar) {
+        $btn = "";
+      }
       $value->no = $no;
-      $value->aksi = "<button class=' btn btn-warning updatetajar' data-index='".$i."' data-id='".$value->id_tajar."'><li class='fa fa-edit'></li></button><button class=' btn btn-danger hapustajar' data-index='".$i."' data-id='".$value->id_tajar."'><li class='fa fa-trash'></li></button>";
+      $value->aksi = "<button class=' btn btn-warning updatetajar' data-index='".$i."' data-id='".$value->id_tajar."'><li class='fa fa-edit'></li></button><button class=' btn btn-danger hapustajar' data-index='".$i."' data-id='".$value->id_tajar."'><li class='fa fa-trash'></li></button> {$btn}";
       $no++;
       $i++;
     }
@@ -323,6 +328,10 @@ class AdminController extends Controller
     }else {
       return response()->json(["status"=>0,"msg"=>"Gagal Hapus Semester"]);
     }
+  }
+  public function upset(Request $req)
+  {
+    return response()->json(updatesetting($req));
   }
   public function logout(Request $req)
   {

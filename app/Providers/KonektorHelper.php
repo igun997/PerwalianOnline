@@ -13,7 +13,8 @@ class KonektorHelper extends ServiceProvider
      */
     public function register()
     {
-        require_once app_path('Helpers/MainPack.php');
+      require_once app_path('Helpers/MainPack.php');
+      require_once app_path('Helpers/SIAKHelper.php');
     }
 
     /**
