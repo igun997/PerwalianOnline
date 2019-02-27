@@ -13,9 +13,13 @@ class JurusanController extends Controller
      $this->url = $url;
      if ($req->session()->get("level") != "jurusan") {
        return redirect('/masuk')->send();
-       // var_dump(($req->session()->all()));
      }else {
-       $this->jurusan = $whereIt = \SIAK\UsersModel::find($req->session()->get("id_user"))->first()->id_jurusan;
+       $id =  \SIAK\UsersModel::find(["id_user"=>$req->session()->get("id_user")]);
+       if ($id->count() > 0) {
+         $this->jurusan = $id->first()->id_jurusan;
+       }else {
+         return response()->json(["status"=>0,"msg"=>"Jurusan Tidak Ditemukan"]);
+       }
      }
   }
   public function index(Request $req)
@@ -212,7 +216,7 @@ class JurusanController extends Controller
   public function readdosen(Request $req)
   {
     $id = $req->session()->get("id_user");
-    $whereIt = \SIAK\UsersModel::find($id)->first()->id_jurusan;
+    $whereIt = \SIAK\UsersModel::find(["id_user"=>$id])->first()->id_jurusan;
     $get = \SIAK\UsersModel::where(["hapus"=>"tidak","level"=>"dosen","id_jurusan"=>$whereIt]);
     $temp = $get->get();
     $no = 1;
@@ -234,7 +238,7 @@ class JurusanController extends Controller
     }
     $id = $post["id_user"];
     unset($post["id_user"]);
-    $set = \SIAK\UsersModel::find($id)->update($post);
+    $set = \SIAK\UsersModel::find(["id_user"=>$id])->update($post);
     if ($set) {
       return response()->json(["status"=>1,"msg"=>"Sukses Update Data Dosen"]);
     }else {
@@ -255,7 +259,7 @@ class JurusanController extends Controller
   {
     $post = $req->all();
     $id = $req->session()->get("id_user");
-    $whereIt = \SIAK\UsersModel::find($id)->first()->id_jurusan;
+    $whereIt = \SIAK\UsersModel::find(["id_user"=>$id])->first()->id_jurusan;
     $post["id_jurusan"] = $whereIt;
     $post["level"] = "dosen";
     $post["password"] = md5($post["password"]);
@@ -288,7 +292,7 @@ class JurusanController extends Controller
   public function readsekretariat(Request $req)
   {
     $id = $req->session()->get("id_user");
-    $whereIt = \SIAK\UsersModel::find($id)->first()->id_jurusan;
+    $whereIt = \SIAK\UsersModel::find(["id_user"=>$id])->first()->id_jurusan;
     $get = \SIAK\UsersModel::where(["hapus"=>"tidak","level"=>"sekretariat","id_jurusan"=>$whereIt]);
     $temp = $get->get();
     $no = 1;
@@ -310,7 +314,7 @@ class JurusanController extends Controller
     }
     $id = $post["id_user"];
     unset($post["id_user"]);
-    $set = \SIAK\UsersModel::find($id)->update($post);
+    $set = \SIAK\UsersModel::find(["id_user"=>$id])->update($post);
     if ($set) {
       return response()->json(["status"=>1,"msg"=>"Sukses Update Data Sekretariat"]);
     }else {
@@ -331,7 +335,7 @@ class JurusanController extends Controller
   {
     $post = $req->all();
     $id = $req->session()->get("id_user");
-    $whereIt = \SIAK\UsersModel::find($id)->first()->id_jurusan;
+    $whereIt = \SIAK\UsersModel::find(["id_user"=>$id])->first()->id_jurusan;
     $post["id_jurusan"] = $whereIt;
     $post["level"] = "sekretariat";
     $post["password"] = md5($post["password"]);

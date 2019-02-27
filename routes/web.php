@@ -52,6 +52,14 @@ Route::post('/admin/addsemester', "AdminController@addsemester");
 Route::post('/admin/upsemester', "AdminController@upsemester");
 Route::post('/admin/delsemester', "AdminController@delsemester");
 
+Route::get('/admin/baak', "AdminController@baak");
+Route::get('/admin/readbaak', "AdminController@readbaak");
+Route::post('/admin/addbaak', "AdminController@addbaak");
+Route::post('/admin/delbaak', "AdminController@delbaak");
+Route::post('/admin/upbaak', "AdminController@upbaak");
+Route::post('/admin/detailbaak', "AdminController@detailbaak");
+
+
 Route::get('/admin/readadminjurusan', "AdminController@readadminjurusan");
 Route::post('/admin/addadminjurusan', "AdminController@addadminjurusan");
 Route::post('/admin/deladminjurusan', "AdminController@deladminjurusan");
@@ -145,6 +153,9 @@ Route::get('/mhs/keluar',function(){
   session()->flush();
   return redirect("/masuk");
 });
+//BAAK
+Route::get('/baak',"BaakController@index");
+
 // Keuangan
 Route::get('/keuangan/keluar',function(){
   session()->flush();

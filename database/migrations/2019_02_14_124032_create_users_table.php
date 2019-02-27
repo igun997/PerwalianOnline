@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
           $table->unsignedInteger('id_jurusan')->nullable();
           $table->unsignedInteger('id_semester')->nullable();
           $table->string('no_telepon',17)->unique()->nullable();
-          $table->enum('level',["mhs","dosen","admin","jurusan","sekretariat"]);
+          $table->enum('level',["mhs","dosen","admin","jurusan","sekretariat","baak"]);
           $table->enum('status_absen',["tidak","ya"])->nullable();
           $table->enum('hapus',["tidak","ya"]);
           $table->timestamps();

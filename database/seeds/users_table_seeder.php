@@ -21,6 +21,7 @@ class users_table_seeder extends Seeder
         $obj2 = new \SIAK\UsersModel;
         $obj3 = new \SIAK\UsersModel;
         $obj4 = new \SIAK\UsersModel;
+        $obj5 = new \SIAK\UsersModel;
         $obj->nama_lengkap = "Indra Gunanda";
         $obj->username = "10515211";
         $obj->password = md5("10515211");
@@ -77,5 +78,15 @@ class users_table_seeder extends Seeder
         $obj4->level = "dosen";
         $obj4->hapus = "tidak";
         $obj4->save();
+        $obj5->nama_lengkap = "baak";
+        $obj5->username = "baak";
+        $obj5->password = md5("baak");
+        $obj5->jk = "laki-laki";
+        $obj5->email = "baak@gmail.com";
+        $obj5->alamat = "Banjar";
+        $obj5->no_hp = "081224567645";
+        $obj5->level = "baak";
+        $obj5->hapus = "tidak";
+        $obj5->save();
     }
 }

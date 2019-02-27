@@ -16,7 +16,7 @@ class DosenController extends Controller
      if ($req->session()->get("level") != "dosen") {
        return redirect('/masuk')->send();
      }else {
-        $this->jurusan = $whereIt = \SIAK\UsersModel::find($req->session()->get("id_user"))->first()->id_jurusan;
+        $this->jurusan = $whereIt = \SIAK\UsersModel::find(["id_user"=>$req->session()->get("id_user")])->first()->id_jurusan;
         $this->id = $req->session()->get("id_user");
      }
   }
@@ -48,7 +48,7 @@ class DosenController extends Controller
       $compound = ["total_pertemuan"=>$data->matkul->pertemuan,"pertemuan_terakhir"=>$last_meet];
       return response()->json(["status"=>1,"data"=>$compound]);
     }else {
-      return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
+      return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan","debug"=>$get->count()]);
     }
   }
   public function getpeserta(Request $req)
