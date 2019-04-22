@@ -1,6 +1,6 @@
 <?php
 
-namespace SIAK\Http\Middleware;
+namespace Burung\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;

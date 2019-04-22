@@ -1,6 +1,6 @@
 <?php
 
-namespace SIAK\Http\Middleware;
+namespace Burung\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Fideloper\Proxy\TrustProxies as Middleware;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SIAK\Providers;
+namespace Burung\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +14,7 @@ class KonektorHelper extends ServiceProvider
     public function register()
     {
       require_once app_path('Helpers/MainPack.php');
-      require_once app_path('Helpers/SIAKHelper.php');
+      require_once app_path('Helpers/Topsis.php');
     }
 
     /**

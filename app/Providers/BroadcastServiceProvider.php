@@ -1,6 +1,6 @@
 <?php
 
-namespace SIAK\Providers;
+namespace Burung\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Broadcast;

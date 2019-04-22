@@ -31,7 +31,7 @@ return [
     ],
 
     'stripe' => [
-        'model' => SIAK\User::class,
+        'model' => Burung\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
         'webhook' => [

@@ -1,6 +1,6 @@
 <?php
 
-namespace SIAK\Providers;
+namespace Burung\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;

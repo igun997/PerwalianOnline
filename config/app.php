@@ -169,12 +169,12 @@ return [
         /*
          * Application Service Providers...
          */
-        SIAK\Providers\AppServiceProvider::class,
-        SIAK\Providers\AuthServiceProvider::class,
-        SIAK\Providers\KonektorHelper::class,
-        // SIAK\Providers\BroadcastServiceProvider::class,
-        SIAK\Providers\EventServiceProvider::class,
-        SIAK\Providers\RouteServiceProvider::class,
+        Burung\Providers\AppServiceProvider::class,
+        Burung\Providers\AuthServiceProvider::class,
+        Burung\Providers\KonektorHelper::class,
+        // Burung\Providers\BroadcastServiceProvider::class,
+        Burung\Providers\EventServiceProvider::class,
+        Burung\Providers\RouteServiceProvider::class,
 
     ],
 

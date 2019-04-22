@@ -1,4 +1,10 @@
 <?php
+function sortByOrder($a, $b) {
+  return $a['id_event_kriteria'] - $b['id_event_kriteria'];
+}
+function sortbynilai($a, $b) {
+  return $a['nilai'] < $b['nilai'];
+}
 function datatablesConvert($res=[],$select="")
 {
   $data = [];
@@ -58,7 +64,7 @@ function stylePack($type='style')
   foreach ($css as $key => &$value) {
     $baseexp = explode("-|",$value);
     if (count($baseexp) > 1) {
-      $value = '<link rel="stylesheet" href="'.url($baseexp[1]).'">';
+      $value = '<link rel="stylesheet" href="'.url("public/assets/".$baseexp[1]).'">';
     }else {
       $value = '<link rel="stylesheet" href="'.str_replace("\n","",$value).'">';
     }
@@ -66,7 +72,7 @@ function stylePack($type='style')
   foreach ($js as $key => &$value) {
     $baseexp = explode("-|",$value);
     if (count($baseexp) > 1) {
-      $value = '<script src="'.url($baseexp[1]).'"></script>';
+      $value = '<script src="'.url("public/assets/".$baseexp[1]).'"></script>';
     }else {
       $value = '<script src="'.str_replace("\n","",$value).'"></script>';
     }

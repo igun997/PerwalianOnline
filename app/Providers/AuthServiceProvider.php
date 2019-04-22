@@ -1,6 +1,6 @@
 <?php
 
-namespace SIAK\Providers;
+namespace Burung\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -13,7 +13,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'SIAK\Model' => 'SIAK\Policies\ModelPolicy',
+        'Burung\Model' => 'Burung\Policies\ModelPolicy',
     ];
 
     /**

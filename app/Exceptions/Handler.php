@@ -1,6 +1,6 @@
 <?php
 
-namespace SIAK\Exceptions;
+namespace Burung\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;

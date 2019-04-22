@@ -1,424 +1,300 @@
 <?php
 
-namespace SIAK\Http\Controllers;
-
+namespace Burung\Http\Controllers;
+use Helpers\Topsis;
 use Illuminate\Http\Request;
-use Illuminate\Routing\UrlGenerator;
+
 class AdminController extends Controller
 {
-  public $url ;
-  public function __construct(UrlGenerator $url,Request $req)
-  {
-     $this->url = $url;
-     if ($req->session()->get("level") != "admin") {
-       return redirect('/masuk')->send();
-     }
-  }
-  public function index()
-  {
-    $css = [];
-    $js = [];
-    return view("admin.pages.home")->with(["title"=>"Dashboard Administrator Perwalian","css"=>$css,"js"=>$js]);
-  }
-  //Jurusan
-  public function jurusan()
-  {
-    $css = [];
-    $js = [
-      $this->url->to("/public/assets/main/admin/jurusan.js")
-    ];
-    return view("admin.pages.jurusan")->with(["title"=>"Dashboard Administrator Perwalian - Jurusan","css"=>$css,"js"=>$js]);
-  }
-  public function addjurusan(Request $req)
-  {
-    $postData = $req->all();
-    $postData["status_jurusan"] = "aktif";
-    $ins = \SIAK\JurusanModel::create($postData);
-    if ($ins) {
-      return response()->json(["status"=>1,"msg"=>"Sukses Menambahkan Jurusan"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Gagal Menambahkan Jurusan"]);
-    }
-    // return response()->json($postData);
-  }
-  public function readjurusan(Request $req)
-  {
-    $get = \SIAK\JurusanModel::where(["status_jurusan"=>"aktif"])->get();
-    $temp = $get;
-    $n = 1;
-    $i = 0;
-    foreach ($temp as $key => &$value) {
-      $value->no = $n;
-      $value->aksi = "<button class='btn btn-warning updatejurusan' data-index='".$i."' data-id='".$value->id_jurusan."'><li class='fa fa-edit'></li></button> <button class='btn btn-danger hapusjurusan' data-index='".$i."' data-id='".$value->id_jurusan."'><li class='fa fa-trash'></li></button>";
-      $n++;
-      $i++;
-    }
-    $dt = datatablesConvert($temp,"no,nama_jurusan,aksi");
-    return response()->json($dt);
-  }
-  public function upjurusan(Request $req)
-  {
-    $update = \SIAK\JurusanModel::find($req->input("id_jurusan"));
-    $update->nama_jurusan = $req->input("nama_jurusan");
-    $save = $update->save();
-    if ($save) {
-      return response()->json(["status"=>1,"msg"=>"Sukses Update Jurusan"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Gagal Update Jurusan"]);
-    }
-  }
-  public function deljurusan(Request $req)
-  {
-    $update = \SIAK\JurusanModel::find($req->input("id_jurusan"));
-    $update->status_jurusan = "tidak";
-    $save = $update->save();
-    if ($save) {
-      return response()->json(["status"=>1,"msg"=>"Sukses Hapus Jurusan"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Gagal Hapus Jurusan"]);
-    }
-  }
-  public function readadminjurusan(Request $req)
-  {
-    $get = \SIAK\UsersModel::where(["level"=>"jurusan","hapus"=>"tidak"])->get();
-    $temp = $get;
-    $n = 1;
-    $i = 0;
-    foreach ($temp as $key => &$value) {
-      $value->no = $n;
-      $value->kontak = $value->no_hp."/".$value->no_telepon;
-      $value->status_jurusan = ucfirst($value->status_jurusan);
-      $value->nama_jurusan = $value->jurusan["nama_jurusan"];
-      $value->aksi = "<button class=' btn btn-warning updateadminjurusan' data-index='".$i."' data-id='".$value->id_user."'><li class='fa fa-edit'></li></button><button class=' btn btn-danger hapusadminjurusan' data-index='".$i."' data-id='".$value->id_user."'><li class='fa fa-trash'></li></button><button class=' btn btn-success detailadminjurusan' data-index='".$i."' data-id='".$value->id_user."'><li class='fa fa-search'></li></button>";
-      $n++;
-      $i++;
-    }
-    $get = datatablesConvert($temp,"no,nama_lengkap,username,nama_jurusan,email,kontak,aksi");
-    return response()->json($get);
-  }
-  public function listjurusan()
-  {
-    return response()->json(select2Convert(\SIAK\JurusanModel::all(),["text"=>"nama_jurusan","id"=>"id_jurusan"]));
-  }
-  public function addadminjurusan(Request $req)
-  {
-    $postData = $req->all();
-    $postData["password"] = md5($postData["password"]);
-    $postData["level"] = "jurusan";
-    $postData["created_at"] = date("Y-m-d H:i:s");
-    $postData["updated_at"] = date("Y-m-d H:i:s");
-    $ins = \SIAK\UsersModel::create($postData);
-    if ($ins) {
-      return response()->json(["status"=>1,"msg"=>"Sukses Menambahkan Administrator Jurusan"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Gagal Menambahkan Administrator Jurusan"]);
-    }
-  }
-  public function detailadminjurusan(Request $req)
-  {
-    $get = \SIAK\UsersModel::where(["id_user"=>$req->input("id_user"),"hapus"=>"tidak","level"=>"jurusan"]);
-    if ($get->count() > 0) {
-      $first = $get->first();
-      $first->nama_jurusan = $first->jurusan->nama_jurusan;
-      return response()->json(["status"=>1,"data"=>$first]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
-    }
-  }
-  public function upadminjurusan(Request $req)
-  {
-    $input = $req->all();
-    $up = \SIAK\UsersModel::find($req->input("id_user"));
-    $up->nama_lengkap = $input["nama_lengkap"];
-    $up->jk = $input["jk"];
-    $up->id_jurusan = $input["id_jurusan"];
-    $up->no_telepon = $input["no_telepon"];
-    $up->no_hp = $input["no_hp"];
-    $up->alamat = $input["alamat"];
-    $up->email = $input["email"];
-    if ($input["password"] != "") {
-      $up->password = md5($input["password"]);
-    }
-    $p = $up->save();
-    if ($p) {
-      return response()->json(["status"=>1,"msg"=>"Update Data Administrator Berhasil"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Update Data Administrator Gagal"]);
-    }
-
-  }
-  public function deladminjurusan(Request $req)
-  {
-    $del = \SIAK\UsersModel::find($req->input("id_user"));
-    $del->hapus = "ya";
-    $s = $del->save();
-    if ($s) {
-      return response()->json(["status"=>1,"msg"=>"Sukses Menghapus Admin Jurusan"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Gagal Menghapus Admin Jurusan"]);
-    }
-
-  }
-  //Mahasiswa
-  public function mahasiswa()
-  {
-    $css = [];
-    $js = [
-      $this->url->to("/public/assets/main/admin/mahasiswa.js")
-    ];
-    return view("admin.pages.mahasiswa")->with(["title"=>"Dashboard Administrator Perwalian - Mahasiswa","css"=>$css,"js"=>$js]);
-  }
-  public function carimahasiswa(Request $req)
-  {
-      $type = $req->input("type");
-      if ($type == "== Berdasarkan ==") {
-        return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
+    public function __construct(Request $req)
+    {
+      if ($req->session()->get("level") != "admin") {
+        return redirect("login")->send();
       }
-      $q = $req->input("query");
-      if ($type != "username") {
-        $get = \SIAK\UsersModel::where(["level"=>"mhs",$type=>$q]);
-      }else {
-        $get = \SIAK\UsersModel::where(["level"=>"mhs"])
-        ->orWhere($type,"LIKE","%{$q}%");
-      }
+    }
+    public function index()
+    {
+      $unverif = \Burung\Users::where(["status"=>"nonaktif","level"=>"peserta"])->get();
+      return view("admin.home",["data"=>$unverif,"no"=>1]);
+    }
+    public function verifikasi($id)
+    {
+      $get = \Burung\Users::where(["id_users"=>$id,"level"=>"peserta","status"=>"nonaktif"]);
       if ($get->count() > 0) {
-        $temp = $get->first();
-        $temp->nama_jurusan = $temp->jurusan->nama_jurusan;
-        $temp->status_absen = ucfirst($temp->status_absen);
-        return response()->json(["status"=>1,"msg"=>"Data Ditemukan","data"=>$temp]);
+        $change = \Burung\Users::find($id);
+        $change->status = "aktif";
+        $change->save();
+      }
+      return back();
+    }
+    public function juri()
+    {
+      $get = \Burung\Users::where(["level"=>"juri"])->get();
+      return view("admin.juri",["data"=>$get,"no"=>1]);
+    }
+    public function juriadd()
+    {
+      return view("admin.juri_form");
+    }
+    public function juriadd_aksi(Request $req)
+    {
+      $create = \Burung\Users::create($req->all());
+      if ($create) {
+        session(["msg"=>"Tambah Juri Sukses"]);
       }else {
-        return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
+        session(["msg"=>"Tambah Juri Gagal"]);
       }
-  }
-  public function resetpassword(Request $req)
-  {
-    $id = $req->input("id_user");
-    $pw = alpha();
-    $reset = \SIAK\UsersModel::find($id);
-    $reset->password = md5($pw);
-    $set = $reset->save();
-    if ($set) {
-      return response()->json(["status"=>1,"msg"=>"Sukses Reset Password","newpass"=>$pw]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Gagal Reset Password"]);
+      return back();
     }
-  }
-  //Setting Akademik
-  public function setakademik()
-  {
-    $css = [];
-    $js = [
-      $this->url->to("/public/assets/main/admin/setakademik.js")
-    ];
-    return view("admin.pages.setakademik")->with(["title"=>"Dashboard Administrator Perwalian - Akademik","css"=>$css,"js"=>$js]);
-  }
-  public function listtajar(Request $req)
-  {
-    $get = \SIAK\TajarModel::all();
-    $select2 = select2Convert($get,["text"=>"nama_tajar","id"=>"id_tajar"]);
-    return response()->json($select2);
-  }
-  public function addtajar(Request $req)
-  {
-    $set = \SIAK\TajarModel::create($req->all());
-    if ($set->save()) {
-      return response()->json(["status"=>1,"msg"=>"Tahun Ajar Berhasil di Tambah"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Tahun Ajar Gagal di Tambah"]);
+    public function juriedit($id)
+    {
+      $data = \Burung\Users::where(["id_users"=>$id]);
+      return view("admin.juri_form",["data"=>$data->first()]);
     }
-  }
-  public function uptajar(Request $req)
-  {
-    $set = \SIAK\TajarModel::find($req->input("id_tajar"));
-    $set->nama_tajar = $req->input("nama_tajar");
-    if ($set->save()) {
-      return response()->json(["status"=>1,"msg"=>"Tahun Ajar Berhasil di Ubah"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Tahun Ajar Gagal di Ubah"]);
-    }
-  }
-  public function deltajar(Request $req)
-  {
-    $set = \SIAK\TajarModel::find($req->input("id_tajar"));
-    if ($set->delete()) {
-      return response()->json(["status"=>1,"msg"=>"Tahun Ajar Berhasil di Hapus"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Tahun Ajar Gagal di Hapus"]);
-    }
-  }
-  public function detailtajar(Request $req)
-  {
-    $get = \SIAK\TajarModel::find($req->input("id_tajar"));
-    if ($get->count() > 0) {
-      $all = $get->all();
-      return response()->json(["status"=>1,"data"=>$all]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
-    }
-  }
-  public function readtajar(Request $req)
-  {
-    $get = \SIAK\TajarModel::all();
-    $no = 1;
-    $i = 0;
-    $set = \SIAK\SettingModel::where(["meta_key"=>"tahun_ajar"])->first();
-    foreach ($get as $key => &$value) {
-      $btn = "<button class=' btn btn-success settajar' data-index='".$i."' data-id='".$value->id_tajar."'><li class='fa fa-check'></li></button>";
-      if ($set->meta_value == $value->id_tajar) {
-        $btn = "";
-      }
-      $value->no = $no;
-      $value->aksi = "<button class=' btn btn-warning updatetajar' data-index='".$i."' data-id='".$value->id_tajar."'><li class='fa fa-edit'></li></button><button class=' btn btn-danger hapustajar' data-index='".$i."' data-id='".$value->id_tajar."'><li class='fa fa-trash'></li></button> {$btn}";
-      $no++;
-      $i++;
-    }
-    $dt = datatablesConvert($get,"no,nama_tajar,aksi");
-    return response()->json($dt);
-  }
-  public function detailsemester(Request $req)
-  {
-    $get = \SIAK\SemesterModel::where(["id_semester"=>$req->input("id_semester")]);
-    if ($get->count() > 0) {
-      $all = $get->first();
-      return response()->json(["status"=>1,"data"=>$all]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
-    }
-  }
-  public function readsemester()
-  {
-    $get = \SIAK\SemesterModel::all();
-    $no = 1;
-    $i = 0;
-    foreach ($get as $key => &$value) {
-      $value->no = $no;
-      $value->tahun_ajar = $value->tajar->nama_tajar;
-      $value->aksi = "<button class=' btn btn-warning updatesemester' data-index='".$i."' data-id='".$value->id_semester."'><li class='fa fa-edit'></li></button><button class=' btn btn-danger hapussemester' data-index='".$i."' data-id='".$value->id_semester."'><li class='fa fa-trash'></li></button>";
-      $no++;
-      $i++;
-    }
-    $dt = datatablesConvert($get,"no,nama_semester,tahun_ajar,aksi");
-    return response()->json($dt);
-  }
-  public function addsemester(Request $req)
-  {
-    $create = \SIAK\SemesterModel::create($req->all());
-    if ($create->save()) {
-      return response()->json(["status"=>1,"msg"=>"Sukses Tambah Semester"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Gagal Tambah Semester"]);
-    }
-  }
-  public function upsemester(Request $req)
-  {
-      $set = \SIAK\SemesterModel::find($req->input("id_semester"));
-      $set->nama_semester = $req->input("nama_semester");
-      $set->id_tajar = $req->input("id_tajar");
-      if ($set->save()) {
-        return response()->json(["status"=>1,"msg"=>"Sukses Update Semester"]);
+    public function juriedit_aksi(Request $req,$id)
+    {
+      $data = $req->all();
+      unset($data["_token"]);
+      $create = \Burung\Users::where(["id_users"=>$id])->update($data);
+      if ($create) {
+        session(["msg"=>"Update Juri Sukses"]);
       }else {
-        return response()->json(["status"=>0,"msg"=>"Gagal Update Semester"]);
+        session(["msg"=>"Update Juri Gagal"]);
       }
-  }
-  public function delsemester(Request $req)
-  {
-    $set = \SIAK\SemesterModel::find($req->input("id_semester"));
-    if ($set->delete()) {
-      return response()->json(["status"=>1,"msg"=>"Sukses Hapus Semester"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Gagal Hapus Semester"]);
+      return back();
     }
-  }
-  public function upset(Request $req)
-  {
-    return response()->json(updatesetting($req));
-  }
-  public function baak()
-  {
-    $css = [];
-    $js = [
-      $this->url->to("/public/assets/main/admin/baak.js")
-    ];
-    return view("admin.pages.baak")->with(["title"=>"Dashboard Administrator Perwalian - BAAK","css"=>$css,"js"=>$js]);
-  }
-  public function readbaak(Request $req)
-  {
-    $get = \SIAK\UsersModel::where(["level"=>"baak","hapus"=>"tidak"])->get();
-    $temp = $get;
-    $n = 1;
-    $i = 0;
-    foreach ($temp as $key => &$value) {
-      $value->no = $n;
-      $value->kontak = $value->no_hp."/".$value->no_telepon;
-      $value->aksi = "<button class=' btn btn-warning updatebaak' data-index='".$i."' data-id='".$value->id_user."'><li class='fa fa-edit'></li></button><button class=' btn btn-danger hapusbaak' data-index='".$i."' data-id='".$value->id_user."'><li class='fa fa-trash'></li></button>";
-      $n++;
-      $i++;
+    public function jurihapus($id)
+    {
+      $delete = \Burung\Users::find($id)->delete();
+      return back();
     }
-    $get = datatablesConvert($temp,"no,nama_lengkap,username,email,kontak,aksi");
-    return response()->json($get);
-  }
-  public function addbaak(Request $req)
-  {
-    $postData = $req->all();
-    $postData["password"] = md5($postData["password"]);
-    $postData["level"] = "baak";
-    $postData["created_at"] = date("Y-m-d H:i:s");
-    $postData["updated_at"] = date("Y-m-d H:i:s");
-    $ins = \SIAK\UsersModel::create($postData);
-    if ($ins) {
-      return response()->json(["status"=>1,"msg"=>"Sukses Menambahkan Administrator BAAK"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Gagal Menambahkan Administrator BAAK"]);
+    public function kelas()
+    {
+      $get = \Burung\Kelas::all();
+      return view("admin.kelas",["data"=>$get,"no"=>1]);
     }
-  }
-  public function detailbaak(Request $req)
-  {
-    $get = \SIAK\UsersModel::where(["id_user"=>$req->input("id_user"),"hapus"=>"tidak","level"=>"baak"]);
-    if ($get->count() > 0) {
-      $first = $get->first();
-      return response()->json(["status"=>1,"data"=>$first]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Data Tidak Ditemukan"]);
+    public function kelasadd()
+    {
+      return view("admin.kelas_form");
     }
-  }
-  public function upbaak(Request $req)
-  {
-    $input = $req->all();
-    $up = \SIAK\UsersModel::find($req->input("id_user"));
-    $up->nama_lengkap = $input["nama_lengkap"];
-    $up->jk = $input["jk"];
-    $up->no_telepon = $input["no_telepon"];
-    $up->no_hp = $input["no_hp"];
-    $up->alamat = $input["alamat"];
-    $up->email = $input["email"];
-    if ($input["password"] != "") {
-      $up->password = md5($input["password"]);
+    public function kelasedit($id)
+    {
+      $get = \Burung\Kelas::where(["id_kelas"=>$id]);
+      return view("admin.kelas_form",["data"=>$get->first()]);
     }
-    $p = $up->save();
-    if ($p) {
-      return response()->json(["status"=>1,"msg"=>"Update Data Administrator Berhasil"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Update Data Administrator Gagal"]);
+    public function kelasedit_aksi(Request $req,$id)
+    {
+      $data = $req->all();
+      unset($data["_token"]);
+      $update = \Burung\Kelas::where(["id_kelas"=>$id])->update($data);
+      if ($update) {
+        session(["msg"=>"Update Kelas Sukses"]);
+      }else {
+        session(["msg"=>"Update Kelas Gagal"]);
+      }
+      return back();
     }
+    public function kelasadd_aksi(Request $req)
+    {
+      $create = \Burung\Kelas::create($req->all());
+      if ($create) {
+        session(["msg"=>"Tambah Kelas Sukses"]);
+      }else {
+        session(["msg"=>"Tambah Kelas Gagal"]);
+      }
+      return back();
+    }
+    public function kelashapus($id)
+    {
+      $del = \Burung\Kelas::find($id)->delete();
+      return back();
+    }
+    public function event()
+    {
+      return view("admin.event",["data"=>\Burung\Event::all(),"no"=>1]);
+    }
+    public function eventadd()
+    {
+      return view("admin.event_form");
+    }
+    public function eventadd_aksi(Request $req)
+    {
+      $this->validate($req, [
+       'img_header'=>'mimes:jpg,png,jpeg'
+      ]);
+      $data = $req->all();
+      unset($data["_token"]);
+      if ($req->hasFile('img_header')) {
+            $image = $req->file('img_header');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/upload');
+            $save = $image->move($destinationPath, $name);
+            if ($save) {
+              $data["img_header"] = "public/upload/".$name;
+              $create = \Burung\Event::create($data);
+              if ($create) {
+                session(["msg"=>"Data Tersimpan"]);
+              }else {
+                session(["msg"=>"Data Gagal Tersimpan"]);
+              }
+            }else {
+              session(["msg"=>"Format Yang Dibolehkan = jpg,png,jpeg"]);
+            }
+        }else {
+          session(["msg"=>"Tidak Ada Gambar Yang Dipilih"]);
+        }
+        return back();
+    }
+    public function eventedit($id)
+    {
+      $get = \Burung\Event::where(["id_event"=>$id]);
+      if ($get->count() > 0) {
+        return view("admin.event_form",["data"=>$get->first()]);
+      }else {
+        return back();
+      }
+    }
+    public function eventedit_aksi(Request $req,$id)
+    {
+      $this->validate($req, [
+       'img_header'=>'mimes:jpg,png,jpeg'
+      ]);
+      $data = $req->all();
+      unset($data["_token"]);
+      if ($req->hasFile('img_header')) {
+            $image = $req->file('img_header');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/upload');
+            $save = $image->move($destinationPath, $name);
+            if ($save) {
+              $data["img_header"] = "public/upload/".$name;
+              $update = \Burung\Event::find($id);
+              $update->nama = $data["nama"];
+              $update->tanggal = $data["tanggal"];
+              $update->deskripsi = $data["deskripsi"];
+              $update->id_kelas = $data["id_kelas"];
+              $update->img_header = $data["img_header"];
+              if ($update->save()) {
+                session(["msg"=>"Data Tersimpan"]);
+              }else {
+                session(["msg"=>"Data Gagal Tersimpan"]);
+              }
+            }else {
+              session(["msg"=>"Format Yang Dibolehkan = jpg,png,jpeg"]);
+            }
+        }else {
+          $update = \Burung\Event::find($id);
+          $update->nama = $data["nama"];
+          $update->tanggal = $data["tanggal"];
+          $update->deskripsi = $data["deskripsi"];
+          $update->id_kelas = $data["id_kelas"];
+          if ($update->save()) {
+            session(["msg"=>"Data Tersimpan"]);
+          }else {
+            session(["msg"=>"Data Gagal Tersimpan"]);
+          }
+        }
+        return back();
+    }
+    public function eventhapus($id)
+    {
+      $del = \Burung\Event::find($id)->delete();
+      return back();
+    }
+    public function eventdetail($id)
+    {
+      $find = \Burung\Event::where(["id_event"=>$id]);
+      if ($find->count() > 0) {
+        return view("admin.eventdetail",["data"=>$find->first()]);
+      }else {
+        return back();
+      }
+    }
+    public function eventdetailkriteria_aksi(Request $req)
+    {
+      $data = $req->all();
+      unset($data["_token"]);
+      $create = \Burung\Event_kriteria::create($data);
+      if ($create) {
+        session(["msg"=>"Data Kriteria Tersimpan"]);
+      }else {
+        session(["msg"=>"Data Kriteria Gagal Tersimpan"]);
+      }
+      return back();
+    }
+    public function eventdetailkriteria_del($id,$del)
+    {
+      $del = \Burung\Event_kriteria::find($del)->delete();
+      return back();
+    }
+    public function eventdetailjuri_aksi(Request $req)
+    {
+      $data = $req->all();
+      unset($data["_token"]);
+      $create = \Burung\Juri::create($data);
+      if ($create) {
+        session(["msg"=>"Data Juri Tersimpan"]);
+      }else {
+        session(["msg"=>"Data Juri Gagal Tersimpan"]);
+      }
+      return back();
+    }
+    public function eventdetailjuri_del($id,$del)
+    {
+      $del = \Burung\Juri::find($del)->delete();
+      return back();
+    }
+    public function eventdetailhasil($id)
+    {
+      $first = \Burung\Event::where(["id_event"=>$id])->first();
+      $topsis = new Topsis();
+      $getcrit = \Burung\Event_kriteria::where(["id_event"=>$id])->select("id_event_kriteria","nama","bobot")->get();
+      $getalt = \Burung\Event_peserta::where(["id_event"=>$id])->get();
+      $role = \Burung\Juri::where(["id_event"=>$id])->get();
+      $alt = [];
+      $data = [];
+      foreach ($getalt as $key => $value) {
+        $alt[] = $value->users->nama;
+      }
+      $newcr = [];
+      foreach ($getalt as $key => $value) {
+        $calc = [];
+        $nilai = \Burung\Event_penilaian::where(["id_peserta"=>$value->id_users])->get();
+        foreach ($nilai as $k => $v) {
+          $calc[] = ["nama"=>$value->users->nama,"id_peserta"=>$v->id_peserta,"id_event_kriteria"=>$v->id_event_kriteria,"nilai"=>$v->nilai,"id_juri"=>$v->id_juri];
+        }
+        $newcr[] = $calc;
+      }
+      $new = [];
 
-  }
-  public function delbaak(Request $req)
-  {
-    $del = \SIAK\UsersModel::find($req->input("id_user"));
-    $del->hapus = "ya";
-    $s = $del->save();
-    if ($s) {
-      return response()->json(["status"=>1,"msg"=>"Sukses Menghapus Admin BAAK"]);
-    }else {
-      return response()->json(["status"=>0,"msg"=>"Gagal Menghapus Admin BAAK"]);
+      foreach ($newcr as $key => &$value) {
+          usort($value,"sortByOrder");
+      }
+      $count = count($role);
+      $i = 0;
+      $const = [];
+      foreach ($newcr as $keyx => $valuex) {
+        $data = [];
+        $n = 0;
+        foreach ($valuex as $k => $v) {
+          ++$i;
+          $n = $n + $v["nilai"];
+          if ($i == $count) {
+            $data[] = $n/$count;
+            $n = 0;
+            $i = 0;
+          }
+
+        }
+        $const[] = $data;
+      }
+      $const = array_map(null, ...$const);
+      $topsis->setKriteria($getcrit);
+      $topsis->setAlternatif($alt);
+      $topsis->setData($const);
+      $run = $topsis->run();
+      usort($run,"sortbynilai");
+      // return response()->json($run);
+      return view("admin.hasil",["data"=>$first,"rank"=>$run,"no"=>1]);
     }
-
-  }
-
-  public function logout(Request $req)
-  {
-    $req->session()->flush();
-    $req->session()->regenerate();
-    return redirect('/masuk');
-  }
 }

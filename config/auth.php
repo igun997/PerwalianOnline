@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => SIAK\User::class,
+            'model' => Burung\User::class,
         ],
 
         // 'users' => [

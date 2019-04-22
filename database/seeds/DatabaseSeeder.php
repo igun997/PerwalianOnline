@@ -11,9 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-      $this->call(tajar::class);
-      $this->call(semester::class);
-      $this->call(users_table_seeder::class);
-      $this->call(setting_meta::class);
+      $this->call(Users::class);
     }
 }
