@@ -66,4 +66,13 @@
               </tbody>
             </table>
             @else
-            <div class="alert al
+            <div class="alert alert-info">
+              <p>Tidak Ada Event Yang Di Ikuti</p>
+            </div>
+            @endif
+          @endif
+        </div>
+      </div>
+    </div>
+  </div>
+@endsection

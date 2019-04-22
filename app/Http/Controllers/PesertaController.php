@@ -1,7 +1,7 @@
 <?php
 
 namespace Burung\Http\Controllers;
-
+use PDF;
 use Illuminate\Http\Request;
 
 class PesertaController extends Controller
@@ -55,6 +55,19 @@ class PesertaController extends Controller
         return view("peserta.event_detail".["data"=>$get->first()]);
       }else {
         return back();
+      }
+    }
+    public function print($id='')
+    {
+      $get =  \Burung\Event_peserta::where(["id_event_peserta"=>$id]);
+      if ($get->count() < 1) {
+        return back();
+      }else {
+        $data = [
+      		'data' => $get->first()
+      	];
+      	$pdf = PDF::loadView('letter.cetak_kartu', $data);
+      	return $pdf->stream('kartu.pdf');
       }
     }
     public function eventregister($id)

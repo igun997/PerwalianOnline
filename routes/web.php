@@ -59,6 +59,7 @@ Route::post('/juri/penilaian/{id}',"JuriController@penilaian_detail_aksi");
 //Peserta
 Route::get('/peserta',"PesertaController@index");
 Route::post('/peserta',"PesertaController@index_aksi");
+Route::get('/peserta/print/{id}',"PesertaController@print");
 Route::get('/peserta/event',"PesertaController@event");
 Route::get('/peserta/event/{id}',"PesertaController@event_detail");
 Route::get('/peserta/event/{id}/register',"PesertaController@eventregister");
