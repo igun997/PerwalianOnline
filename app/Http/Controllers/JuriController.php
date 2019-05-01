@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 
 class JuriController extends Controller
 {
+    public function __construct(Request $req)
+    {
+      if ($req->session()->get("level") != "juri") {
+        return redirect("login")->send();
+      }
+    }
     public function index()
     {
       return view("juri.home");
@@ -19,15 +25,18 @@ class JuriController extends Controller
       $get = \Burung\Event::where(["id_event"=>$id])->first();
       $crit = \Burung\Event_kriteria::where(["id_event"=>$id])->get();
       $counter = count($crit);
-      $check = \Burung\Event_penilaian::whereIn("id_event_kriteria",function($query){
-        $query->select("id_event_kriteria")->from("event_kriteria");
-      })->where("id_juri",session("id_users"))->count();
-      // if ($check < 1) {
+      $crits = [];
+      foreach ($crit as $key => $value) {
+        $crits[] = $value->id_event_kriteria;
+      }
+      // return response()->json(session());
+      $cek = \Burung\Event_penilaian::whereIn("id_event_kriteria",$crits)->where(["id_juri"=>session()->get("id_users")]);
+      if ($cek->count() < 1) {
         return view("juri.penilaiandetail",["data"=>$get,"kriteria"=>$crit]);
-      // }else {
-        // session(["msg"=>"Anda Sudah Melakukan Penilaian Sebelummnya"]);
-        // return redirect("juri/penilaian");
-      // }
+      }else {
+        session(["msg"=>"Anda Sudah Melakukan Penilaian Sebelummnya"]);
+        return redirect("juri/penilaian");
+      }
     }
     public function penilaian_detail_aksi(Request $req,$id)
     {
