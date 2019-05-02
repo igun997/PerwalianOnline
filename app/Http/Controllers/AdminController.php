@@ -259,7 +259,12 @@ class AdminController extends Controller
       $newcr = [];
       foreach ($getalt as $key => $value) {
         $calc = [];
-        $nilai = \Burung\Event_penilaian::where(["id_peserta"=>$value->id_users])->get();
+        $whereIn = \Burung\Event_kriteria::where(["id_event"=>$id])->get();
+        $in = [];
+        foreach ($whereIn as $keys => $values) {
+          $in[] = $values->id_event_kriteria;
+        }
+        $nilai = \Burung\Event_penilaian::where(["id_peserta"=>$value->id_users])->whereIn("id_event_kriteria",$in)->get();
         foreach ($nilai as $k => $v) {
           $calc[] = ["nama"=>$value->users->nama,"id_peserta"=>$v->id_peserta,"id_event_kriteria"=>$v->id_event_kriteria,"nilai"=>$v->nilai,"id_juri"=>$v->id_juri];
         }
@@ -294,6 +299,7 @@ class AdminController extends Controller
       $topsis->setData($const);
       $run = $topsis->run();
       usort($run,"sortbynilai");
+      // usort($run,"sortbynilai");
       // return response()->json($run);
       return view("admin.hasil",["data"=>$first,"rank"=>$run,"no"=>1]);
     }

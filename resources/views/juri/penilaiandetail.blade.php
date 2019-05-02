@@ -32,9 +32,9 @@
                   <td>{{$v->users->nama}}</td>
                   @foreach($kriteria as $kk => $vv)
                   <td>
-                    <div class="form-group">
-                      <input type="number" max="100" min="1"  hidden name="id_event_kriteria[{{$v->users->id_users}}][]" value="{{$vv->id_event_kriteria}}">
-                      <input type="number" max="100" min="1"  name="nilai[{{$v->users->id_users}}][]" class="form-control" placeholder="Masukan Nilai 1 - 100">
+                    <div class="form-group" style="margin-top:10px">
+                      <input type="text" value="" class="slider form-control"  data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="1" data-slider-id="red" name="nilai[{{$v->users->id_users}}][]">
+                      <input  type="number" max="100" min="1"  hidden name="id_event_kriteria[{{$v->users->id_users}}][]" value="{{$vv->id_event_kriteria}}">
                     </div>
                   </td>
                   @endforeach

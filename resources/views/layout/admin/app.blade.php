@@ -123,5 +123,11 @@ desired effect
 
 <!-- REQUIRED JS SCRIPTS -->
 {!!(stylePack("admin"))["js"]!!}
+<script type="text/javascript">
+$(function () {
+  /* BOOTSTRAP SLIDER */
+  $('.slider').slider()
+})
+</script>
 </body>
 </html>

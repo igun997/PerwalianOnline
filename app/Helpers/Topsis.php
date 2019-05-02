@@ -49,6 +49,7 @@ class Topsis
       }
       $y[] = $rs;
     }
+
     $min = $max = [];
     //-- melakukan iterasi utk setiap kriteria
     $tsy = array_map(null, ...$y);
